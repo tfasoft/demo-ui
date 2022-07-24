@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 import {
     Container,
     TextField,
@@ -5,6 +7,7 @@ import {
     Typography,
     Card,
     CardContent,
+    Divider,
 } from "@mui/material";
 
 import {
@@ -12,9 +15,25 @@ import {
 } from "@mui/icons-material";
 
 const AuthPage = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const [usernameError, setUsernameError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+
+    const [login, setLogin] = useState(true);
+
+    const usernamePasswordAuth = () => {
+        console.log('Username Password Auth');
+    }
+
+    const telegramAuth = () => {
+        console.log('Auth with Telegram.')
+    }
+
     return (
         <Container
-            maxWidth="sm"
+            maxWidth="xs"
             sx={{
                 mt: "2rem",
             }}
@@ -26,8 +45,6 @@ const AuthPage = () => {
                 }}
             >
                 <CardContent>
-                    <Typography>Hello</Typography>
-                    <br />
                     <TextField
                         variant="outlined"
                         color="primary"
@@ -51,16 +68,34 @@ const AuthPage = () => {
                     <Button
                         variant="contained"
                         size="large"
+                        onClick={() => usernamePasswordAuth()}
                         disableElevation
                         fullWidth
                     >
-                        Create account
+                        { login ? "Login" : "Register" }
                     </Button>
                     <br /><br />
+                    <Button
+                        variant="outlined"
+                        size="large"
+                        onClick={() => setLogin(!login)}
+                        disableElevation
+                        fullWidth
+                    >
+                        { login ? "I don't have account" : "I have account" }
+                    </Button>
+                    <br /><br />
+                    <Divider
+                        sx={{
+                            borderColor: "primary.main"
+                        }}
+                    />
+                    <br />
                     <Button
                         variant="contained"
                         size="large"
                         startIcon={<Telegram />}
+                        onClick={() => telegramAuth()}
                         disableElevation
                         fullWidth
                     >
