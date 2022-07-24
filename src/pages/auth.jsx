@@ -8,6 +8,11 @@ import {
     Card,
     CardContent,
     Divider,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
 } from "@mui/material";
 
 import {
@@ -17,11 +22,14 @@ import {
 const AuthPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [telegramToken, setTelegramToken] = useState('');
 
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const [tokenError, setTokenError] = useState(false);
 
     const [login, setLogin] = useState(true);
+    const [openTelegram, setOpenTelegram] = useState(false);
 
     const usernamePasswordAuth = () => {
         console.log('Username Password Auth');
@@ -52,6 +60,9 @@ const AuthPage = () => {
                         placeholder="Pick a username"
                         size="medium"
                         type="text"
+                        onChange={(e) => setUsername(e.target.value)}
+                        value={username}
+                        error={usernameError}
                         fullWidth
                     />
                     <br /><br />
@@ -62,6 +73,9 @@ const AuthPage = () => {
                         placeholder="Pick a password"
                         size="medium"
                         type="password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
+                        error={passwordError}
                         fullWidth
                     />
                     <br /><br />
@@ -95,7 +109,7 @@ const AuthPage = () => {
                         variant="contained"
                         size="large"
                         startIcon={<Telegram />}
-                        onClick={() => telegramAuth()}
+                        onClick={() => setOpenTelegram(true)}
                         disableElevation
                         fullWidth
                     >
@@ -103,6 +117,43 @@ const AuthPage = () => {
                     </Button>
                 </CardContent>
             </Card>
+
+            <Dialog
+                open={openTelegram}
+                onClose={() => setOpenTelegram(false)}
+            >
+                <DialogTitle>
+                    Authenticate with Telegram
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Open TFASoft bot and generate a token. Paste your token in the field below.
+                    </DialogContentText>
+                    <br />
+                    <TextField
+                        variant="outlined"
+                        color="primary"
+                        label="Token"
+                        placeholder="Paste token"
+                        size="small"
+                        type="password"
+                        onChange={(e) => setTelegramToken(e.target.value)}
+                        value={telegramToken}
+                        error={tokenError}
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => telegramAuth()}
+                        disableElevation
+                    >
+                        Authenticate
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Container>
     );
 }
