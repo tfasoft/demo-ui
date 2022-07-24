@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom";
 import {
     AppBar,
     Toolbar,
@@ -8,6 +9,8 @@ import {
 } from "@mui/material";
 
 const Navbar = () => {
+    const history = useHistory();
+
     return (
         <Box>
             <AppBar
@@ -19,9 +22,13 @@ const Navbar = () => {
                             variant="h5"
                             sx={{
                                 flexGrow: 1,
+                                cursor: "pointer",
+                            }}
+                            onClick={() => {
+                                history.push('/');
                             }}
                         >
-                            Hello
+                            React TFA Demo
                         </Typography>
                         <Button
                             variant="outlined"
@@ -29,6 +36,9 @@ const Navbar = () => {
                             sx={{
                                 borderWidth: 2,
                                 borderColor: "#ffffff"
+                            }}
+                            onClick={() => {
+                                history.push('/auth');
                             }}
                             disableElevation
                         >
