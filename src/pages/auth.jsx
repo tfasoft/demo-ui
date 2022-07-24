@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import Axios from "axios";
 import tfa from "tfa-node-sdk";
@@ -24,7 +25,14 @@ import {
     Telegram
 } from "@mui/icons-material";
 
+import {createUser} from "../redux/actions/user";
+import {setUID} from "../redux/actions/uid";
+import {loginUser} from "../redux/actions/session";
+
 const AuthPage = () => {
+    const dispatch = useDispatch();
+    const auth = new tfa("WuBjwvrQencoplabrUtPvDKaz");
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [telegramToken, setTelegramToken] = useState('');
@@ -36,8 +44,6 @@ const AuthPage = () => {
     const [login, setLogin] = useState(true);
     const [openTelegram, setOpenTelegram] = useState(false);
     const [telegramLoading, setTelegramLoading] = useState(false);
-
-    const auth = new tfa("WuBjwvrQencoplabrUtPvDKaz");
 
     // Snackbar
     const [openSnack, setOpenSnack] = useState(false);
@@ -64,6 +70,11 @@ const AuthPage = () => {
                     .then((result) => {
                         if (result.data.length === 1) {
                             const user = result.data[0];
+
+                            dispatch(createUser(user));
+                            dispatch(setUID(user.id));
+                            dispatch(loginUser(true));
+
                             createSnack('User is founded', 'success');
                         } else {
                             createSnack('User is not found', 'error');
@@ -81,7 +92,13 @@ const AuthPage = () => {
 
                 Axios.post(`http://localhost:8000/users`, user)
                     .then((result) => {
-                        console.log(result.data);
+                        const user = result.data;
+
+                        dispatch(createUser(user));
+                        dispatch(setUID(user.id));
+                        dispatch(loginUser(true));
+
+                        createSnack('User is registered', 'success');
                     })
                     .catch((error) => {
                         console.log(error);
