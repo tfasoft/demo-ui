@@ -137,7 +137,12 @@ const AuthPage = () => {
 
                                 Axios.post(`http://localhost:8000/users`, user)
                                     .then((result) => {
-                                        console.log(result.data);
+                                        const user = result.data;
+
+                                        dispatch(createUser(user));
+                                        dispatch(setUID(user.id));
+                                        dispatch(loginUser(true));
+
                                         createSnack('User is created.', 'success');
                                     })
                                     .catch((error) => {
@@ -147,6 +152,12 @@ const AuthPage = () => {
                                 Axios.get(`http://localhost:8000/users?tid=${resultUser.uid}`)
                                     .then((result) => {
                                         if (result.data.length === 1) {
+                                            const user = result.data[0];
+
+                                            dispatch(createUser(user));
+                                            dispatch(setUID(user.id));
+                                            dispatch(loginUser(true));
+
                                             createSnack('User is login', 'success');
                                         }
                                     })
