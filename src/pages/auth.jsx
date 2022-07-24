@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+import Axios from "axios";
+import tfa from "tfa-node-sdk";
+
 import {
     Container,
     TextField,
@@ -13,6 +16,8 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
+    Snackbar,
+    Alert,
 } from "@mui/material";
 
 import {
@@ -30,13 +35,120 @@ const AuthPage = () => {
 
     const [login, setLogin] = useState(true);
     const [openTelegram, setOpenTelegram] = useState(false);
+    const [telegramLoading, setTelegramLoading] = useState(false);
+
+    const auth = new tfa("WuBjwvrQencoplabrUtPvDKaz");
+
+    // Snackbar
+    const [openSnack, setOpenSnack] = useState(false);
+    const [messageSnack, setMessageSnack] = useState('');
+    const [typeSnack, setTypeSnack] = useState('');
+    const createSnack = (message, type) => {
+        setMessageSnack(message);
+        setTypeSnack(type);
+
+        setOpenSnack(true)
+    }
 
     const usernamePasswordAuth = () => {
-        console.log('Username Password Auth');
+        setUsernameError(false);
+        setPasswordError(false);
+
+        if (username !== '' && password !== '') {
+            if (login) {
+                const user = {
+                    username,
+                    password
+                }
+                Axios.get(`http://localhost:8000/users?username=${username}&password=${password}`)
+                    .then((result) => {
+                        if (result.data.length === 1) {
+                            const user = result.data[0];
+                            createSnack('User is founded', 'success');
+                        } else {
+                            createSnack('User is not found', 'error');
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            } else {
+                const user = {
+                    username,
+                    password,
+                    "tid": null
+                };
+
+                Axios.post(`http://localhost:8000/users`, user)
+                    .then((result) => {
+                        console.log(result.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        } else {
+            if (username === '') setUsernameError(true);
+            if (password === '') setPasswordError(true);
+        }
     }
 
     const telegramAuth = () => {
-        console.log('Auth with Telegram.')
+        setTokenError(false);
+
+        if (telegramToken !== '') {
+            const user = auth.authUser(telegramToken);
+            setTelegramLoading(true);
+
+            user.then((result) => {
+                setTelegramLoading(false);
+
+                if (result.status !== undefined) {
+                    const resultObject = result.data;
+                    const resultUser = resultObject.user;
+
+                    console.log(resultUser);
+
+                    Axios.get(`http://localhost:8000/users?tid=${resultUser.uid}`)
+                        .then((result) => {
+                            if (result.data.length === 0) {
+                                const user = {
+                                    username: null,
+                                    password: null,
+                                    tid: resultUser.uid
+                                };
+
+                                Axios.post(`http://localhost:8000/users`, user)
+                                    .then((result) => {
+                                        console.log(result.data);
+                                        createSnack('User is created.', 'success');
+                                    })
+                                    .catch((error) => {
+                                        console.log(error);
+                                    });
+                            } else {
+                                Axios.get(`http://localhost:8000/users?tid=${resultUser.uid}`)
+                                    .then((result) => {
+                                        if (result.data.length === 1) {
+                                            createSnack('User is login', 'success');
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        console.log(error);
+                                    });
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                } else {
+                    const resultObject = result.response.data;
+                    createSnack(resultObject.message, 'error');
+                }
+            });
+        } else {
+            setTokenError(true);
+        }
     }
 
     return (
@@ -149,11 +261,18 @@ const AuthPage = () => {
                         color="primary"
                         onClick={() => telegramAuth()}
                         disableElevation
+                        disabled={telegramLoading}
                     >
                         Authenticate
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <Snackbar open={openSnack} autoHideDuration={6000} onClose={() => setOpenSnack(false)}>
+                <Alert onClose={() => setOpenSnack(false)} severity={typeSnack}>
+                    {messageSnack}
+                </Alert>
+            </Snackbar>
         </Container>
     );
 }
