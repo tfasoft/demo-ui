@@ -15,7 +15,7 @@ function App() {
             white: {
                 main: "#ffffff",
             }
-        }
+        },
     });
 
     return (
