@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import Axios from "axios";
@@ -31,7 +32,11 @@ import {loginUser} from "../redux/actions/session";
 
 const AuthPage = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const auth = new tfa("WuBjwvrQencoplabrUtPvDKaz");
+
+    const session = useSelector(state => state.session);
+    if (session) history.push('/panel');
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
