@@ -76,6 +76,9 @@ const AuthPage = () => {
                             dispatch(loginUser(true));
 
                             createSnack('User is founded', 'success');
+
+                            setUsername('');
+                            setPassword('');
                         } else {
                             createSnack('User is not found', 'error');
                         }
@@ -99,6 +102,9 @@ const AuthPage = () => {
                         dispatch(loginUser(true));
 
                         createSnack('User is registered', 'success');
+
+                        setUsername('');
+                        setPassword('');
                     })
                     .catch((error) => {
                         console.log(error);
@@ -144,6 +150,9 @@ const AuthPage = () => {
                                         dispatch(loginUser(true));
 
                                         createSnack('User is created.', 'success');
+
+                                        setOpenTelegram(false);
+                                        setTelegramToken('');
                                     })
                                     .catch((error) => {
                                         console.log(error);
@@ -159,6 +168,9 @@ const AuthPage = () => {
                                             dispatch(loginUser(true));
 
                                             createSnack('User is login', 'success');
+
+                                            setOpenTelegram(false);
+                                            setTelegramToken('');
                                         }
                                     })
                                     .catch((error) => {
