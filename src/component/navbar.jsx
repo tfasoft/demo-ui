@@ -1,4 +1,6 @@
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
+
 import {
     AppBar,
     Toolbar,
@@ -8,8 +10,15 @@ import {
     Button,
 } from "@mui/material";
 
+import {deleteUser} from "../redux/actions/user";
+import {unsetUID} from "../redux/actions/uid";
+import {logoutUser} from "../redux/actions/session";
+
 const Navbar = () => {
     const history = useHistory();
+    const dispatch = useDispatch();
+
+    const session = useSelector(state => state.session);
 
     return (
         <Box>
@@ -38,16 +47,23 @@ const Navbar = () => {
                                 borderColor: "#ffffff"
                             }}
                             onClick={() => {
-                                history.push('/auth');
+                                if (session) {
+                                    dispatch(deleteUser());
+                                    dispatch(unsetUID());
+                                    dispatch(logoutUser());
+                                }
+                                else {
+                                    history.push(`/auth`);
+                                }
                             }}
                             disableElevation
                         >
-                            Login
+                            {session ? 'Logout' : 'Login'}
                         </Button>
                     </Toolbar>
                 </Container>
             </AppBar>
-            <Toolbar />
+            <Toolbar/>
         </Box>
     );
 }
