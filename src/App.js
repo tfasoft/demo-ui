@@ -20,6 +20,7 @@ function App() {
 
     return (
         <ThemeProvider theme={theme}>
+            <CssBaseline />
             <Router>
                 <Navbar />
                 <Switch>
