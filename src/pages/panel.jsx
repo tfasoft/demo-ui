@@ -15,7 +15,6 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
-    Grid,
     Box,
 } from "@mui/material";
 
@@ -48,7 +47,8 @@ const PanelPage = () => {
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
+        // eslint-disable-next-line
+    }, [user, uid]);
 
     const telegramAuth = user.tid;
 
@@ -56,7 +56,7 @@ const PanelPage = () => {
     const [openTelegramID, setOpenTelegramID] = useState(false);
 
     const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const enableTFA = () => {
@@ -137,8 +137,8 @@ const PanelPage = () => {
                                     label="Change username"
                                     placeholder="Enter username"
                                     size="small"
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    value={name}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
                                 />
                             }
                             second={
