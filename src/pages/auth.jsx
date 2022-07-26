@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import {useState, useEffect} from "react";
+import {useHistory} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
 
 import Axios from "axios";
 
@@ -66,26 +66,21 @@ const AuthPage = () => {
             if (login) {
                 const user = {
                     email,
-                    password
+                    password,
                 }
-                console.log('Login user with email and password');
+
                 Axios.post('http://localhost:5000/auth/login', user)
                     .then((result) => {
-                        // if (result.data.length === 1) {
-                        //     const user = result.data[0];
-                        //
-                        //     dispatch(createUser(user));
-                        //     dispatch(setUID(user.id));
-                        //     dispatch(loginUser(true));
-                        //
-                        //     createSnack('User is founded', 'success');
-                        //
-                        //     setUsername('');
-                        //     setPassword('');
-                        // } else {
-                        //     createSnack('User is not found', 'error');
-                        // }
-                        console.log(result);
+                        const user = result.data;
+
+                        dispatch(createUser(user));
+                        dispatch(setUID(user._id));
+                        dispatch(loginUser(true));
+
+                        createSnack('User is founded', 'success');
+
+                        setEmail('');
+                        setPassword('');
                     })
                     .catch((error) => {
                         console.log(error);
@@ -94,22 +89,20 @@ const AuthPage = () => {
                 const user = {
                     email,
                     password,
-                    "tid": null
                 };
-                console.log('Register user with email and password');
+
                 Axios.post(`http://localhost:5000/auth/register`, user)
                     .then((result) => {
-                        // const user = result.data;
-                        //
-                        // dispatch(createUser(user));
-                        // dispatch(setUID(user.id));
-                        // dispatch(loginUser(true));
-                        //
-                        // createSnack('User is registered', 'success');
-                        //
-                        // setEmail('');
-                        // setPassword('');
-                        console.log(result);
+                        const user = result.data;
+
+                        dispatch(createUser(user));
+                        dispatch(setUID(user._id));
+                        dispatch(loginUser(true));
+
+                        createSnack('User is registered', 'success');
+
+                        setEmail('');
+                        setPassword('');
                     })
                     .catch((error) => {
                         console.log(error);
@@ -128,19 +121,26 @@ const AuthPage = () => {
             setTelegramLoading(true);
 
             const data = {
-                tid: telegramToken,
+                user_token: telegramToken,
             }
 
             Axios.post('http://localhost:5000/auth/telegram', data)
                 .then((result) => {
-                    console.log(result.data);
+                    const user = result.data;
+
+                    dispatch(createUser(user));
+                    dispatch(setUID(user._id));
+                    dispatch(loginUser(true));
+
+                    createSnack('User is registered', 'success');
 
                     setTelegramLoading(false);
+                    setTelegramToken('');
                 })
                 .catch((error) => {
-                    console.log(error);
-
+                    createSnack(error.response.data.message, 'error');
                     setTelegramLoading(false);
+                    setTelegramToken('');
                 });
         } else {
             setTokenError(true);
@@ -167,13 +167,13 @@ const AuthPage = () => {
                         label="Email"
                         placeholder="Enter your email"
                         size="medium"
-                        type="text"
+                        type="email"
                         onChange={(e) => setEmail(e.target.value)}
                         value={email}
                         error={emailError}
                         fullWidth
                     />
-                    <br /><br />
+                    <br/><br/>
                     <TextField
                         variant="outlined"
                         color="primary"
@@ -186,7 +186,7 @@ const AuthPage = () => {
                         error={passwordError}
                         fullWidth
                     />
-                    <br /><br />
+                    <br/><br/>
                     <Button
                         variant="contained"
                         size="large"
@@ -194,9 +194,9 @@ const AuthPage = () => {
                         disableElevation
                         fullWidth
                     >
-                        { login ? "Login" : "Register" }
+                        {login ? "Login" : "Register"}
                     </Button>
-                    <br /><br />
+                    <br/><br/>
                     <Button
                         variant="outlined"
                         size="large"
@@ -204,19 +204,19 @@ const AuthPage = () => {
                         disableElevation
                         fullWidth
                     >
-                        { login ? "I don't have account" : "I have account" }
+                        {login ? "I don't have account" : "I have account"}
                     </Button>
-                    <br /><br />
+                    <br/><br/>
                     <Divider
                         sx={{
                             borderColor: "primary.main"
                         }}
                     />
-                    <br />
+                    <br/>
                     <Button
                         variant="contained"
                         size="large"
-                        startIcon={<Telegram />}
+                        startIcon={<Telegram/>}
                         onClick={() => setOpenTelegram(true)}
                         disableElevation
                         fullWidth
@@ -237,7 +237,7 @@ const AuthPage = () => {
                     <DialogContentText>
                         Open TFASoft bot and generate a token. Paste your token in the field below.
                     </DialogContentText>
-                    <br />
+                    <br/>
                     <TextField
                         variant="outlined"
                         color="primary"
