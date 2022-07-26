@@ -3,13 +3,11 @@ import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import Axios from "axios";
-import tfa from "tfa-node-sdk";
 
 import {
     Container,
     TextField,
     Button,
-    Typography,
     Card,
     CardContent,
     Divider,
@@ -33,16 +31,15 @@ import {loginUser} from "../redux/actions/session";
 const AuthPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const auth = new tfa("WuBjwvrQencoplabrUtPvDKaz");
 
     const session = useSelector(state => state.session);
     if (session) history.push('/panel');
 
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [telegramToken, setTelegramToken] = useState('');
 
-    const [usernameError, setUsernameError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [tokenError, setTokenError] = useState(false);
 
@@ -62,61 +59,64 @@ const AuthPage = () => {
     }
 
     const usernamePasswordAuth = () => {
-        setUsernameError(false);
+        setEmailError(false);
         setPasswordError(false);
 
-        if (username !== '' && password !== '') {
+        if (email !== '' && password !== '') {
             if (login) {
                 const user = {
-                    username,
+                    email,
                     password
                 }
-                Axios.get(`http://localhost:8000/users?username=${username}&password=${password}`)
+                console.log('Login user with email and password');
+                Axios.post('http://localhost:5000/auth/login', user)
                     .then((result) => {
-                        if (result.data.length === 1) {
-                            const user = result.data[0];
-
-                            dispatch(createUser(user));
-                            dispatch(setUID(user.id));
-                            dispatch(loginUser(true));
-
-                            createSnack('User is founded', 'success');
-
-                            setUsername('');
-                            setPassword('');
-                        } else {
-                            createSnack('User is not found', 'error');
-                        }
+                        // if (result.data.length === 1) {
+                        //     const user = result.data[0];
+                        //
+                        //     dispatch(createUser(user));
+                        //     dispatch(setUID(user.id));
+                        //     dispatch(loginUser(true));
+                        //
+                        //     createSnack('User is founded', 'success');
+                        //
+                        //     setUsername('');
+                        //     setPassword('');
+                        // } else {
+                        //     createSnack('User is not found', 'error');
+                        // }
+                        console.log(result);
                     })
                     .catch((error) => {
                         console.log(error);
                     });
             } else {
                 const user = {
-                    username,
+                    email,
                     password,
                     "tid": null
                 };
-
-                Axios.post(`http://localhost:8000/users`, user)
+                console.log('Register user with email and password');
+                Axios.post(`http://localhost:5000/auth/register`, user)
                     .then((result) => {
-                        const user = result.data;
-
-                        dispatch(createUser(user));
-                        dispatch(setUID(user.id));
-                        dispatch(loginUser(true));
-
-                        createSnack('User is registered', 'success');
-
-                        setUsername('');
-                        setPassword('');
+                        // const user = result.data;
+                        //
+                        // dispatch(createUser(user));
+                        // dispatch(setUID(user.id));
+                        // dispatch(loginUser(true));
+                        //
+                        // createSnack('User is registered', 'success');
+                        //
+                        // setEmail('');
+                        // setPassword('');
+                        console.log(result);
                     })
                     .catch((error) => {
                         console.log(error);
                     });
             }
         } else {
-            if (username === '') setUsernameError(true);
+            if (email === '') setEmailError(true);
             if (password === '') setPasswordError(true);
         }
     }
@@ -125,72 +125,23 @@ const AuthPage = () => {
         setTokenError(false);
 
         if (telegramToken !== '') {
-            const user = auth.authUser(telegramToken);
             setTelegramLoading(true);
 
-            user.then((result) => {
-                setTelegramLoading(false);
+            const data = {
+                tid: telegramToken,
+            }
 
-                if (result.status !== undefined) {
-                    const resultObject = result.data;
-                    const resultUser = resultObject.user;
+            Axios.post('http://localhost:5000/auth/telegram', data)
+                .then((result) => {
+                    console.log(result.data);
 
-                    console.log(resultUser);
+                    setTelegramLoading(false);
+                })
+                .catch((error) => {
+                    console.log(error);
 
-                    Axios.get(`http://localhost:8000/users?tid=${resultUser.uid}`)
-                        .then((result) => {
-                            if (result.data.length === 0) {
-                                const user = {
-                                    username: null,
-                                    password: null,
-                                    tid: resultUser.uid
-                                };
-
-                                Axios.post(`http://localhost:8000/users`, user)
-                                    .then((result) => {
-                                        const user = result.data;
-
-                                        dispatch(createUser(user));
-                                        dispatch(setUID(user.id));
-                                        dispatch(loginUser(true));
-
-                                        createSnack('User is created.', 'success');
-
-                                        setOpenTelegram(false);
-                                        setTelegramToken('');
-                                    })
-                                    .catch((error) => {
-                                        console.log(error);
-                                    });
-                            } else {
-                                Axios.get(`http://localhost:8000/users?tid=${resultUser.uid}`)
-                                    .then((result) => {
-                                        if (result.data.length === 1) {
-                                            const user = result.data[0];
-
-                                            dispatch(createUser(user));
-                                            dispatch(setUID(user.id));
-                                            dispatch(loginUser(true));
-
-                                            createSnack('User is login', 'success');
-
-                                            setOpenTelegram(false);
-                                            setTelegramToken('');
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        console.log(error);
-                                    });
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
-                } else {
-                    const resultObject = result.response.data;
-                    createSnack(resultObject.message, 'error');
-                }
-            });
+                    setTelegramLoading(false);
+                });
         } else {
             setTokenError(true);
         }
@@ -213,13 +164,13 @@ const AuthPage = () => {
                     <TextField
                         variant="outlined"
                         color="primary"
-                        label="Username"
-                        placeholder="Pick a username"
+                        label="Email"
+                        placeholder="Enter your email"
                         size="medium"
                         type="text"
-                        onChange={(e) => setUsername(e.target.value)}
-                        value={username}
-                        error={usernameError}
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
+                        error={emailError}
                         fullWidth
                     />
                     <br /><br />
