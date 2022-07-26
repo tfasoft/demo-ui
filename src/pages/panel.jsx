@@ -13,7 +13,15 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
+    Box,
+    Tab,
 } from "@mui/material";
+
+import {
+    TabContext,
+    TabList,
+    TabPanel
+} from "@mui/lab";
 
 import {createUser} from "../redux/actions/user";
 
@@ -44,6 +52,11 @@ const PanelPage = () => {
             });
         // eslint-disable-next-line
     }, [user, uid]);
+
+    const [tab, setTab] = useState('1');
+    const changeTab = (event, newValue) => {
+        setTab(newValue);
+    };
 
     const telegramAuth = user.tid;
 
@@ -80,7 +93,46 @@ const PanelPage = () => {
             }}
         >
 
-
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                }}
+            >
+                <TabContext
+                    value={tab}
+                >
+                    <Box sx={{borderRight: 1, borderColor: 'divider'}}>
+                        <TabList
+                            onChange={changeTab}
+                            orientation="vertical"
+                            variant="scrollable"
+                        >
+                            <Tab
+                                label="Home"
+                                value="1"
+                            />
+                            <Tab
+                                label="Settings"
+                                value="2"
+                            />
+                            <Tab
+                                label="Account"
+                                value="3"
+                            />
+                        </TabList>
+                    </Box>
+                    <TabPanel value="1">
+                        Tab 1
+                    </TabPanel>
+                    <TabPanel value="2">
+                        Tab 2
+                    </TabPanel>
+                    <TabPanel value="3">
+                        Tab 3
+                    </TabPanel>
+                </TabContext>
+            </Box>
 
             {/*<Typography*/}
             {/*    variant="h4"*/}
