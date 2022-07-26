@@ -8,19 +8,14 @@ import {
     Container,
     TextField,
     Button,
-    Typography,
-    Divider,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogContentText,
     DialogActions,
-    Box,
 } from "@mui/material";
 
 import {createUser} from "../redux/actions/user";
-
-import SettingsRow from "../component/settingsrow";
 
 const PanelPage = () => {
     const dispatch = useDispatch();
@@ -84,131 +79,135 @@ const PanelPage = () => {
                 mt: "2rem",
             }}
         >
-            <Typography
-                variant="h4"
-                color="primary"
-                gutterBottom
-            >
-                Welcome
-            </Typography>
-            <Divider
-                sx={{
-                    borderColor: "primary.main"
-                }}
-            />
-            <br/>
-            <SettingsRow
-                first={
-                    <Box>
-                        <Typography
-                            variant="h5"
-                            gutterBottom
-                        >
-                            Telegram Authentication
-                        </Typography>
-                        <Divider/>
-                        <br/>
-                        <SettingsRow
-                            first={
-                                <TextField
-                                    variant="outlined"
-                                    label="Change name"
-                                    placeholder="Enter name"
-                                    size="small"
-                                    onChange={(e) => setName(e.target.value)}
-                                    value={name}
-                                />
-                            }
-                            second={
-                                <Button
-                                    variant="contained"
-                                    onClick={() => {
-                                    }}
-                                    disableElevation
-                                >
-                                    Change name
-                                </Button>
-                            }
-                        />
-                        <SettingsRow
-                            first={
-                                <TextField
-                                    variant="outlined"
-                                    label="Change username"
-                                    placeholder="Enter username"
-                                    size="small"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    value={email}
-                                />
-                            }
-                            second={
-                                <Button
-                                    variant="contained"
-                                    onClick={() => {
-                                    }}
-                                    disableElevation
-                                >
-                                    Change username
-                                </Button>
-                            }
-                        />
-                        <SettingsRow
-                            first={
-                                <TextField
-                                    variant="outlined"
-                                    label="Change name"
-                                    placeholder="Enter password"
-                                    size="small"
-                                    type="password"
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    value={password}
-                                />
-                            }
-                            second={
-                                <Button
-                                    variant="contained"
-                                    onClick={() => {
-                                    }}
-                                    disableElevation
-                                >
-                                    Change password
-                                </Button>
-                            }
-                        />
-                    </Box>
-                }
-                second={
-                    <Box>
-                        <Typography
-                            variant="h5"
-                            gutterBottom
-                        >
-                            Telegram Authentication
-                        </Typography>
-                        <Divider/>
-                        <br/>
-                        <Typography
-                            variant="h5"
-                            color={telegramAuth ? 'success.main' : 'error.main'}
-                            gutterBottom
-                        >
-                            {telegramAuth ? 'Telegram authentication is activated.' : 'Telegram authentication is not activated.'}
-                        </Typography>
-                        {
-                            !telegramAuth
-                            &&
-                            <Button
-                                variant="contained"
-                                color="success"
-                                onClick={() => setOpenTelegramID(true)}
-                                disableElevation
-                            >
-                                Activate Telegram Authentication
-                            </Button>
-                        }
-                    </Box>
-                }
-            />
+
+
+
+            {/*<Typography*/}
+            {/*    variant="h4"*/}
+            {/*    color="primary"*/}
+            {/*    gutterBottom*/}
+            {/*>*/}
+            {/*    Welcome*/}
+            {/*</Typography>*/}
+            {/*<Divider*/}
+            {/*    sx={{*/}
+            {/*        borderColor: "primary.main"*/}
+            {/*    }}*/}
+            {/*/>*/}
+            {/*<br/>*/}
+            {/*<SettingsRow*/}
+            {/*    first={*/}
+            {/*        <Box>*/}
+            {/*            <Typography*/}
+            {/*                variant="h5"*/}
+            {/*                gutterBottom*/}
+            {/*            >*/}
+            {/*                Telegram Authentication*/}
+            {/*            </Typography>*/}
+            {/*            <Divider/>*/}
+            {/*            <br/>*/}
+            {/*            <SettingsRow*/}
+            {/*                first={*/}
+            {/*                    <TextField*/}
+            {/*                        variant="outlined"*/}
+            {/*                        label="Change name"*/}
+            {/*                        placeholder="Enter name"*/}
+            {/*                        size="small"*/}
+            {/*                        onChange={(e) => setName(e.target.value)}*/}
+            {/*                        value={name}*/}
+            {/*                    />*/}
+            {/*                }*/}
+            {/*                second={*/}
+            {/*                    <Button*/}
+            {/*                        variant="contained"*/}
+            {/*                        onClick={() => {*/}
+            {/*                        }}*/}
+            {/*                        disableElevation*/}
+            {/*                    >*/}
+            {/*                        Change name*/}
+            {/*                    </Button>*/}
+            {/*                }*/}
+            {/*            />*/}
+            {/*            <SettingsRow*/}
+            {/*                first={*/}
+            {/*                    <TextField*/}
+            {/*                        variant="outlined"*/}
+            {/*                        label="Change username"*/}
+            {/*                        placeholder="Enter username"*/}
+            {/*                        size="small"*/}
+            {/*                        onChange={(e) => setEmail(e.target.value)}*/}
+            {/*                        value={email}*/}
+            {/*                    />*/}
+            {/*                }*/}
+            {/*                second={*/}
+            {/*                    <Button*/}
+            {/*                        variant="contained"*/}
+            {/*                        onClick={() => {*/}
+            {/*                        }}*/}
+            {/*                        disableElevation*/}
+            {/*                    >*/}
+            {/*                        Change username*/}
+            {/*                    </Button>*/}
+            {/*                }*/}
+            {/*            />*/}
+            {/*            <SettingsRow*/}
+            {/*                first={*/}
+            {/*                    <TextField*/}
+            {/*                        variant="outlined"*/}
+            {/*                        label="Change name"*/}
+            {/*                        placeholder="Enter password"*/}
+            {/*                        size="small"*/}
+            {/*                        type="password"*/}
+            {/*                        onChange={(e) => setPassword(e.target.value)}*/}
+            {/*                        value={password}*/}
+            {/*                    />*/}
+            {/*                }*/}
+            {/*                second={*/}
+            {/*                    <Button*/}
+            {/*                        variant="contained"*/}
+            {/*                        onClick={() => {*/}
+            {/*                        }}*/}
+            {/*                        disableElevation*/}
+            {/*                    >*/}
+            {/*                        Change password*/}
+            {/*                    </Button>*/}
+            {/*                }*/}
+            {/*            />*/}
+            {/*        </Box>*/}
+            {/*    }*/}
+            {/*    second={*/}
+            {/*        <Box>*/}
+            {/*            <Typography*/}
+            {/*                variant="h5"*/}
+            {/*                gutterBottom*/}
+            {/*            >*/}
+            {/*                Telegram Authentication*/}
+            {/*            </Typography>*/}
+            {/*            <Divider/>*/}
+            {/*            <br/>*/}
+            {/*            <Typography*/}
+            {/*                variant="h5"*/}
+            {/*                color={telegramAuth ? 'success.main' : 'error.main'}*/}
+            {/*                gutterBottom*/}
+            {/*            >*/}
+            {/*                {telegramAuth ? 'Telegram authentication is activated.' : 'Telegram authentication is not activated.'}*/}
+            {/*            </Typography>*/}
+            {/*            {*/}
+            {/*                !telegramAuth*/}
+            {/*                &&*/}
+            {/*                <Button*/}
+            {/*                    variant="contained"*/}
+            {/*                    color="success"*/}
+            {/*                    onClick={() => setOpenTelegramID(true)}*/}
+            {/*                    disableElevation*/}
+            {/*                >*/}
+            {/*                    Activate Telegram Authentication*/}
+            {/*                </Button>*/}
+            {/*            }*/}
+            {/*        </Box>*/}
+            {/*    }*/}
+            {/*/>*/}
+
             <Dialog
                 open={openTelegramID}
                 onClose={() => setOpenTelegramID(false)}
