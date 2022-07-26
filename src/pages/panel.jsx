@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import {useState, useEffect} from "react";
+import {useHistory} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
 
 import Axios from "axios";
 
@@ -19,7 +19,7 @@ import {
     Box,
 } from "@mui/material";
 
-import { createUser } from "../redux/actions/user";
+import {createUser} from "../redux/actions/user";
 
 import SettingsRow from "../component/settingsrow";
 
@@ -30,20 +30,25 @@ const PanelPage = () => {
     const session = useSelector(state => state.session);
     if (!session) history.push('/auth');
 
+    const uid = useSelector(state => state.uid)
+
     const [user, setUser] = useState({});
 
     useEffect(() => {
-        Axios.get(`http://localhost:8000/users/${uid}`)
+        const userData = {
+            id: uid,
+        };
+
+        Axios.post('http://localhost:5000/user/info', userData)
             .then((result) => {
-                dispatch(createUser(result.data));
-                setUser(result.data);
+                const data = result.data;
+                dispatch(createUser(data));
+                setUser(data);
             })
             .catch((error) => {
                 console.log(error);
-            })
+            });
     }, []);
-
-    const uid = useSelector(state => state.uid);
 
     const telegramAuth = user.tid;
 
@@ -91,7 +96,7 @@ const PanelPage = () => {
                     borderColor: "primary.main"
                 }}
             />
-            <br />
+            <br/>
             <SettingsRow
                 first={
                     <Box>
@@ -101,8 +106,8 @@ const PanelPage = () => {
                         >
                             Telegram Authentication
                         </Typography>
-                        <Divider />
-                        <br />
+                        <Divider/>
+                        <br/>
                         <SettingsRow
                             first={
                                 <TextField
@@ -180,14 +185,14 @@ const PanelPage = () => {
                         >
                             Telegram Authentication
                         </Typography>
-                        <Divider />
-                        <br />
+                        <Divider/>
+                        <br/>
                         <Typography
                             variant="h5"
-                            color={ telegramAuth ? 'success.main' : 'error.main' }
+                            color={telegramAuth ? 'success.main' : 'error.main'}
                             gutterBottom
                         >
-                            { telegramAuth ? 'Telegram authentication is activated.' : 'Telegram authentication is not activated.' }
+                            {telegramAuth ? 'Telegram authentication is activated.' : 'Telegram authentication is not activated.'}
                         </Typography>
                         {
                             !telegramAuth
@@ -213,9 +218,10 @@ const PanelPage = () => {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        To get your TID ( Telegram ID ), open TFA bot and click on my info. TID is available there and you can add it herel
+                        To get your TID ( Telegram ID ), open TFA bot and click on my info. TID is available there and
+                        you can add it here.
                     </DialogContentText>
-                    <br />
+                    <br/>
                     <TextField
                         variant="outlined"
                         color="primary"
