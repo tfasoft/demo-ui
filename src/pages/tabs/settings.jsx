@@ -33,7 +33,7 @@ const SettingsTab = () => {
             }
         }
 
-        Axios.post(`${env}/user/update`, data)
+        Axios.post(`${env.REACT_APP_BACKEND_API}/user/update`, data)
             .then((result) => {
                 console.log(result);
                 dispatch(createUser(result));
