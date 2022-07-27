@@ -30,6 +30,15 @@ const TelegramTab = () => {
     const [telegramID, setTelegramID] = useState('');
     const [openTelegramID, setOpenTelegramID] = useState(false);
 
+    Axios.post(`${env.REACT_APP_BACKEND_API}/user/info`, {id: uid})
+        .then((result) => {
+            const data = result.data;
+            dispatch(createUser(data));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
     // Snackbar
     const [openSnack, setOpenSnack] = useState(false);
     const [messageSnack, setMessageSnack] = useState('');
@@ -51,11 +60,9 @@ const TelegramTab = () => {
 
         Axios.post(`${env.REACT_APP_BACKEND_API}/user/enabletfa`, data)
             .then((result) => {
-                console.log(result);
                 dispatch(createUser(result));
 
                 setOpenTelegramID(false);
-
                 createSnack('Telegram Authentication is now enabled', 'success');
             })
             .catch((error) => {
