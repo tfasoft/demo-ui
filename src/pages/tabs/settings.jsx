@@ -17,6 +17,7 @@ const SettingsTab = () => {
 
     const user = useSelector(state => state.user);
     const uid = useSelector(state => state.uid);
+    const env = useSelector(state => state.env);
 
     const [name, setName] = useState(user.name);
     const [email, setEmail] = useState(user.email);
@@ -32,7 +33,7 @@ const SettingsTab = () => {
             }
         }
 
-        Axios.post('http://localhost:5000/user/update', data)
+        Axios.post(`${env}/user/update`, data)
             .then((result) => {
                 console.log(result);
                 dispatch(createUser(result));
