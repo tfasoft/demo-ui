@@ -21,6 +21,7 @@ const TelegramTab = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
     const uid = useSelector(state => state.uid);
+    const env = useSelector(state => state.env);
 
     const telegramAuth = user.tid;
 
@@ -35,7 +36,7 @@ const TelegramTab = () => {
             }
         }
 
-        Axios.post('http://localhost:5000/user/enabletfa', data)
+        Axios.post(`${env}/user/enabletfa`, data)
             .then((result) => {
                 console.log(result);
                 dispatch(createUser(result));
