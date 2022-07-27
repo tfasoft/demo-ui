@@ -71,7 +71,7 @@ const AuthPage = () => {
                     password,
                 }
 
-                Axios.post(`${env}/auth/login`, user)
+                Axios.post(`${env.REACT_APP_BACKEND_API}/auth/login`, user)
                     .then((result) => {
                         const user = result.data;
 
@@ -93,7 +93,7 @@ const AuthPage = () => {
                     password,
                 };
 
-                Axios.post(`${env}/auth/register`, user)
+                Axios.post(`${env.REACT_APP_BACKEND_API}/auth/register`, user)
                     .then((result) => {
                         const user = result.data;
 
@@ -126,7 +126,7 @@ const AuthPage = () => {
                 user_token: telegramToken,
             }
 
-            Axios.post(`${env}/auth/telegram`, data)
+            Axios.post(`${env.REACT_APP_BACKEND_API}/auth/telegram`, data)
                 .then((result) => {
                     const user = result.data;
 
