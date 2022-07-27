@@ -78,14 +78,9 @@ const AuthPage = () => {
                         dispatch(createUser(user));
                         dispatch(setUID(user._id));
                         dispatch(loginUser(true));
-
-                        createSnack('User is founded', 'success');
-
-                        setEmail('');
-                        setPassword('');
                     })
                     .catch((error) => {
-                        console.log(error);
+                        createSnack(error.response.data.message, 'error');
                     });
             } else {
                 const user = {
