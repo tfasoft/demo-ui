@@ -1,5 +1,8 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { createTheme, ThemeProvider, colors, CssBaseline } from "@mui/material";
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {createTheme, ThemeProvider, colors, CssBaseline} from "@mui/material";
+import {useDispatch} from "react-redux";
+
+import {envCreate} from "./redux/actions/env";
 
 import Navbar from "./component/navbar";
 import HomePage from "./pages/home";
@@ -7,6 +10,8 @@ import AuthPage from "./pages/auth";
 import PanelPage from "./pages/panel";
 
 function App() {
+    const dispatch = useDispatch();
+
     const theme = createTheme({
         palette: {
             primary: {
@@ -18,15 +23,17 @@ function App() {
         },
     });
 
+    dispatch(envCreate(process.env));
+
     return (
         <ThemeProvider theme={theme}>
-            <CssBaseline />
+            <CssBaseline/>
             <Router>
-                <Navbar />
+                <Navbar/>
                 <Switch>
-                    <Route path='/' exact><HomePage /></Route>
-                    <Route path='/auth' exact><AuthPage /></Route>
-                    <Route path='/panel' exact><PanelPage /></Route>
+                    <Route path='/' exact><HomePage/></Route>
+                    <Route path='/auth' exact><AuthPage/></Route>
+                    <Route path='/panel' exact><PanelPage/></Route>
                 </Switch>
             </Router>
         </ThemeProvider>
