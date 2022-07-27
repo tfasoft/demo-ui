@@ -37,7 +37,7 @@ const Navbar = () => {
                                 history.push('/');
                             }}
                         >
-                            React TFA Demo
+                            TFASoft Demo
                         </Typography>
                         <Button
                             variant="outlined"
