@@ -36,7 +36,7 @@ const TelegramTab = () => {
             }
         }
 
-        Axios.post(`${env}/user/enabletfa`, data)
+        Axios.post(`${env.REACT_APP_BACKEND_API}/user/enabletfa`, data)
             .then((result) => {
                 console.log(result);
                 dispatch(createUser(result));
