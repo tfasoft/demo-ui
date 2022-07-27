@@ -28,7 +28,7 @@ const Navbar = () => {
                 <Container>
                     <Toolbar>
                         <Typography
-                            variant="h5"
+                        variant="h6"
                             sx={{
                                 flexGrow: 1,
                                 cursor: "pointer",
