@@ -70,11 +70,11 @@ const TelegramTab = () => {
                             </Typography>
                             <Button
                                 variant="contained"
-                                color="success"
+                                color="primary"
                                 onClick={() => setOpenTelegramID(true)}
                                 disableElevation
                             >
-                                Activate Telegram Authentication
+                                Activate
                             </Button>
                         </Box>
                     }
