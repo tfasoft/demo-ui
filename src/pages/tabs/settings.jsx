@@ -25,6 +25,15 @@ const SettingsTab = () => {
     const [email, setEmail] = useState(user.email);
     const [password, setPassword] = useState(user.password);
 
+    Axios.post(`${env.REACT_APP_BACKEND_API}/user/info`, {id: uid})
+        .then((result) => {
+            const data = result.data;
+            dispatch(createUser(data));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
     // Snackbar
     const [openSnack, setOpenSnack] = useState(false);
     const [messageSnack, setMessageSnack] = useState('');
@@ -48,7 +57,6 @@ const SettingsTab = () => {
 
         Axios.post(`${env.REACT_APP_BACKEND_API}/user/update`, data)
             .then((result) => {
-                console.log(result);
                 dispatch(createUser(result));
 
                 createSnack('Data updated', 'success');
