@@ -28,7 +28,9 @@ const PanelPage = () => {
     const session = useSelector(state => state.session);
     if (!session) history.push('/auth');
 
-    const uid = useSelector(state => state.uid)
+    const env = useSelector(state => state.env);
+
+    const uid = useSelector(state => state.uid);
     const [user, setUser] = useState({});
 
     useEffect(() => {
@@ -36,7 +38,7 @@ const PanelPage = () => {
             id: uid,
         };
 
-        Axios.post('http://localhost:5000/user/info', userData)
+        Axios.post(`${env}/user/info`, userData)
             .then((result) => {
                 const data = result.data;
                 dispatch(createUser(data));
