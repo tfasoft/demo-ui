@@ -14,6 +14,8 @@ import {
     Card,
     CardHeader,
     CardContent,
+    Snackbar,
+    Alert
 } from "@mui/material";
 import {createUser} from "../../redux/actions/user";
 
@@ -27,6 +29,17 @@ const TelegramTab = () => {
 
     const [telegramID, setTelegramID] = useState('');
     const [openTelegramID, setOpenTelegramID] = useState(false);
+
+    // Snackbar
+    const [openSnack, setOpenSnack] = useState(false);
+    const [messageSnack, setMessageSnack] = useState('');
+    const [typeSnack, setTypeSnack] = useState('');
+    const createSnack = (message, type) => {
+        setMessageSnack(message);
+        setTypeSnack(type);
+
+        setOpenSnack(true)
+    }
 
     const enableTFA = () => {
         const data = {
@@ -42,9 +55,13 @@ const TelegramTab = () => {
                 dispatch(createUser(result));
 
                 setOpenTelegramID(false);
+
+                createSnack('Telegram Authentication is now enabled', 'success');
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
+
+                createSnack('Sorry, something went wrong', 'error');
             });
     }
 
@@ -118,6 +135,12 @@ const TelegramTab = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <Snackbar open={openSnack} autoHideDuration={6000} onClose={() => setOpenSnack(false)}>
+                <Alert onClose={() => setOpenSnack(false)} severity={typeSnack}>
+                    {messageSnack}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }
