@@ -1,8 +1,8 @@
 import {useState} from "react";
-
+import {useDispatch, useSelector} from "react-redux";
+import Axios from "axios";
 import {
     Box,
-    Typography,
     TextField,
     Button,
     Card,
@@ -10,27 +10,42 @@ import {
     CardContent,
 } from "@mui/material";
 
+import {createUser} from "../../redux/actions/user";
+
 const SettingsTab = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
+
+    const user = useSelector(state => state.user);
+    const uid = useSelector(state => state.uid);
+
+    const [name, setName] = useState(user.name);
+    const [email, setEmail] = useState(user.email);
+    const [password, setPassword] = useState(user.password);
 
     const updateData = () => {
-        console.log("Update Data");
+        const data = {
+            uid,
+            "data": {
+                name,
+                email,
+                password,
+            }
+        }
+
+        Axios.post('http://localhost:5000/user/update', data)
+            .then((result) => {
+                console.log(result);
+                dispatch(createUser(result));
+            })
+            .catch((error) => {
+                console.log(error)
+            });
     }
 
     return (
         <Box>
-            <Typography
-                variant="h5"
-                color="primary"
-                gutterBottom
-            >
-                Settings
-            </Typography>
-            <br />
             <Card variant="outlined">
-                <CardHeader title="Change name" />
+                <CardHeader title="Settings" sx={{ color: "primary.main" }} />
                 <CardContent>
                     <TextField
                         variant="outlined"
@@ -45,20 +60,6 @@ const SettingsTab = () => {
                     />
                     <br />
                     <br />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => updateData()}
-                        disableElevation
-                    >
-                        Change name
-                    </Button>
-                </CardContent>
-            </Card>
-            <br />
-            <Card variant="outlined">
-                <CardHeader title="Change email" />
-                <CardContent>
                     <TextField
                         variant="outlined"
                         color="primary"
@@ -72,26 +73,13 @@ const SettingsTab = () => {
                     />
                     <br />
                     <br />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => updateData()}
-                        disableElevation
-                    >
-                        Change email
-                    </Button>
-                </CardContent>
-            </Card>
-            <br />
-            <Card variant="outlined">
-                <CardHeader title="Change password" />
-                <CardContent>
                     <TextField
                         variant="outlined"
                         color="primary"
                         label="Password"
                         placeholder="Enter password"
                         size="small"
+                        type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         fullWidth
@@ -104,7 +92,7 @@ const SettingsTab = () => {
                         onClick={() => updateData()}
                         disableElevation
                     >
-                        Change password
+                        Update data
                     </Button>
                 </CardContent>
             </Card>
