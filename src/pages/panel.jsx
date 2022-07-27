@@ -16,39 +16,15 @@ import {
     TabPanel
 } from "@mui/lab";
 
-import {createUser} from "../redux/actions/user";
 import TelegramTab from "./tabs/telegram";
 import SettingsTab from "./tabs/settings";
 import HomeTab from "./tabs/home";
 
 const PanelPage = () => {
-    const dispatch = useDispatch();
     const history = useHistory();
 
     const session = useSelector(state => state.session);
     if (!session) history.push('/auth');
-
-    const env = useSelector(state => state.env);
-
-    const uid = useSelector(state => state.uid);
-    const [user, setUser] = useState({});
-
-    useEffect(() => {
-        const userData = {
-            id: uid,
-        };
-
-        Axios.post(`${env.REACT_APP_BACKEND_API}/user/info`, userData)
-            .then((result) => {
-                const data = result.data;
-                dispatch(createUser(data));
-                setUser(data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        // eslint-disable-next-line
-    }, [user, uid]);
 
     const [tab, setTab] = useState('1');
     const changeTab = (event, newValue) => {
