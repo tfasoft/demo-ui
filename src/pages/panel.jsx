@@ -38,7 +38,7 @@ const PanelPage = () => {
             id: uid,
         };
 
-        Axios.post(`${env}/user/info`, userData)
+        Axios.post(`${env.REACT_APP_BACKEND_API}/user/info`, userData)
             .then((result) => {
                 const data = result.data;
                 dispatch(createUser(data));
