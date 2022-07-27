@@ -48,9 +48,9 @@ const Navbar = () => {
                             }}
                             onClick={() => {
                                 if (session) {
+                                    dispatch(logoutUser());
                                     dispatch(deleteUser());
                                     dispatch(unsetUID());
-                                    dispatch(logoutUser());
                                 }
                                 else {
                                     history.push(`/auth`);
