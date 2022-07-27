@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 
 import {envCreate} from "./redux/actions/env";
 
-import Navbar from "./component/navbar";
+import Navbar from "./components/navbar";
 import HomePage from "./pages/home";
 import AuthPage from "./pages/auth";
 import PanelPage from "./pages/panel";
