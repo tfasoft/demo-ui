@@ -135,8 +135,8 @@ const AuthPage = () => {
                     setTelegramToken('');
                 })
                 .catch((error) => {
-                    console.log(error);
-                    // createSnack(error.response.data.message, 'error');
+                    createSnack(error.response.data.message, 'error');
+
                     setTelegramLoading(false);
                     setTelegramToken('');
                 });
