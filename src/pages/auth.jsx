@@ -35,6 +35,8 @@ const AuthPage = () => {
     const session = useSelector(state => state.session);
     if (session) history.push('/panel');
 
+    const env = useSelector(state => state.env);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [telegramToken, setTelegramToken] = useState('');
@@ -69,7 +71,7 @@ const AuthPage = () => {
                     password,
                 }
 
-                Axios.post('http://localhost:5000/auth/login', user)
+                Axios.post(`${env}/auth/login`, user)
                     .then((result) => {
                         const user = result.data;
 
@@ -91,7 +93,7 @@ const AuthPage = () => {
                     password,
                 };
 
-                Axios.post(`http://localhost:5000/auth/register`, user)
+                Axios.post(`${env}/auth/register`, user)
                     .then((result) => {
                         const user = result.data;
 
@@ -124,7 +126,7 @@ const AuthPage = () => {
                 user_token: telegramToken,
             }
 
-            Axios.post('http://localhost:5000/auth/telegram', data)
+            Axios.post(`${env}/auth/telegram`, data)
                 .then((result) => {
                     const user = result.data;
 
