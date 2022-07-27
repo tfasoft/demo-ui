@@ -1,6 +1,6 @@
 import {useState} from "react";
 import Axios from "axios";
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import {
     Box,
     Button,
@@ -9,13 +9,18 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Divider,
     TextField,
-    Typography
+    Typography,
+    Card,
+    CardHeader,
+    CardContent,
 } from "@mui/material";
+import {createUser} from "../../redux/actions/user";
 
 const TelegramTab = () => {
+    const dispatch = useDispatch();
     const user = useSelector(state => state.user);
+    const uid = useSelector(state => state.uid);
 
     const telegramAuth = user.tid;
 
@@ -23,49 +28,58 @@ const TelegramTab = () => {
     const [openTelegramID, setOpenTelegramID] = useState(false);
 
     const enableTFA = () => {
-        console.log('Enable TFA');
+        const data = {
+            uid,
+            "data": {
+                tid: telegramID
+            }
+        }
 
-        // Axios.put(`http://localhost:8000/users/${uid}`, newData)
-        //     .then((result) => {
-        //         dispatch(createUser(result.data));
-        //         setUser(result.data);
-        //
-        //         setOpenTelegramID(false);
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     })
+        Axios.post('http://localhost:5000/user/enabletfa', data)
+            .then((result) => {
+                console.log(result);
+                dispatch(createUser(result));
+
+                setOpenTelegramID(false);
+            })
+            .catch((error) => {
+                console.log(error)
+            });
     }
 
     return (
         <Box>
-            <Typography
-                variant="h5"
-                color={telegramAuth ? 'success.main' : 'error.main'}
-                gutterBottom
-            >
-                Your Telegram Authentication is { telegramAuth ? 'enable' : 'disable' }
-            </Typography>
-            {
-                !telegramAuth
-                &&
-                <Box>
+            <Card variant="outlined">
+                <CardHeader title="Telegram Authenticaton" sx={{ color: "primary.main" }} />
+                <CardContent>
                     <Typography
-                        gutterBottom
-                        paragraph
+                        variant="body1"
+                        color={telegramAuth ? 'success.main' : 'error.main'}
                     >
-                        You can enable TFA with clicking the button below.
+                        Your Telegram Authentication is { telegramAuth ? 'enable.' : 'disable.' }
                     </Typography>
-                    <Button
-                        variant="contained"
-                        color="success"
-                        onClick={() => setOpenTelegramID(true)}
-                        disableElevation
-                    >
-                        Activate Telegram Authentication
-                    </Button>
-                </Box>
-            }
+                    {
+                        !telegramAuth
+                        &&
+                        <Box>
+                            <Typography
+                                gutterBottom
+                                paragraph
+                            >
+                                You can enable TFA with clicking the button below.
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                color="success"
+                                onClick={() => setOpenTelegramID(true)}
+                                disableElevation
+                            >
+                                Activate Telegram Authentication
+                            </Button>
+                        </Box>
+                    }
+                </CardContent>
+            </Card>
 
             <Dialog
                 open={openTelegramID}
@@ -86,7 +100,7 @@ const TelegramTab = () => {
                         label="Telegram ID"
                         placeholder="Enter Telegram ID"
                         size="small"
-                        type="number"
+                        type="text"
                         onChange={(e) => setTelegramID(e.target.value)}
                         value={telegramID}
                         fullWidth
