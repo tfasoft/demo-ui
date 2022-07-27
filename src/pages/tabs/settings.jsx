@@ -8,6 +8,8 @@ import {
     Card,
     CardHeader,
     CardContent,
+    Snackbar,
+    Alert
 } from "@mui/material";
 
 import {createUser} from "../../redux/actions/user";
@@ -23,6 +25,17 @@ const SettingsTab = () => {
     const [email, setEmail] = useState(user.email);
     const [password, setPassword] = useState(user.password);
 
+    // Snackbar
+    const [openSnack, setOpenSnack] = useState(false);
+    const [messageSnack, setMessageSnack] = useState('');
+    const [typeSnack, setTypeSnack] = useState('');
+    const createSnack = (message, type) => {
+        setMessageSnack(message);
+        setTypeSnack(type);
+
+        setOpenSnack(true)
+    }
+
     const updateData = () => {
         const data = {
             uid,
@@ -37,9 +50,13 @@ const SettingsTab = () => {
             .then((result) => {
                 console.log(result);
                 dispatch(createUser(result));
+
+                createSnack('Data updated', 'success');
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
+
+                createSnack('Sorry, something went wront', 'error');
             });
     }
 
@@ -97,6 +114,12 @@ const SettingsTab = () => {
                     </Button>
                 </CardContent>
             </Card>
+
+            <Snackbar open={openSnack} autoHideDuration={6000} onClose={() => setOpenSnack(false)}>
+                <Alert onClose={() => setOpenSnack(false)} severity={typeSnack}>
+                    {messageSnack}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }
