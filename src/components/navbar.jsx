@@ -2,6 +2,8 @@ import {useState} from "react";
 import {useHistory} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 
+import Axios from "axios";
+
 import {
     AppBar,
     Box,
@@ -15,7 +17,16 @@ import {
     ListItemText,
     ListItemIcon,
     IconButton,
-    Drawer
+    Drawer,
+    Dialog,
+    DialogTitle,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    TextField,
+    Alert,
+    Snackbar,
+    Button,
 } from "@mui/material";
 
 import {
@@ -67,6 +78,39 @@ const Navbar = () => {
     const handleDrawerToggle = () => {
         setDrawerOpen(!drawerOpen);
     };
+
+    const [dialogOpen, setDialogOpen] = useState(false);
+
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+
+    const env = useSelector(state => state.env);
+
+    const [snackOpen, setSnackOpen] = useState(false);
+    const [snackTitle, setSnackTitle] = useState('');
+    const [snackType, setSnackType] = useState('');
+    const createSnack = (title, type) => {
+        setSnackTitle(title);
+        setSnackType(type);
+
+        setSnackOpen(true);
+    }
+
+    const repostBug = () => {
+        const data = {
+            title,
+            content,
+        }
+
+        Axios.post(`${env.REACT_APP_BACKEND_API}/bug/new`, data)
+            .then((result) => {
+                createSnack('Report added', 'success');
+
+            })
+            .catch((error) => {
+                createSnack(error.response.data.message, 'error');
+            });
+    }
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -147,6 +191,21 @@ const Navbar = () => {
                         </ListItem>
                 }
             </List>
+            <Divider />
+            <List>
+                <ListItem
+                    disablePadding
+                >
+                    <ListItemButton
+                        onClick={() => setDialogOpen(true)}
+                    >
+                        <ListItemIcon sx={{ color: "primary.main" }}><BugReport /></ListItemIcon>
+                        <ListItemText
+                            primary="Report a bug"
+                        />
+                    </ListItemButton>
+                </ListItem>
+            </List>
         </Box>
     );
 
@@ -201,6 +260,62 @@ const Navbar = () => {
             </Box>
 
             <Toolbar/>
+
+            <Dialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+            >
+                <DialogTitle
+                    color="primary.main"
+                >
+                    Report a bug
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Hello dear user/debugger! If you are here, it means that you found a bug. Also it might be for just checking! Anyway, if you saw a bug or things like this, you can send it to us. Thank a lot.
+                    </DialogContentText>
+                    <br />
+                    <TextField
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        placeholder="Enter bug title!"
+                        label="Bug title"
+                        sx={{ mb: "1rem" }}
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        fullWidth
+                    />
+                    <TextField
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        placeholder="Enter where you saw the bug!"
+                        label="Bug details"
+                        sx={{ mb: "1rem" }}
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        rows={5}
+                        multiline
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="outlined"
+                        onClick={() => repostBug()}
+                        disableElevation
+                    >
+                        Report
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Snackbar open={snackOpen} autoHideDuration={6000} onClose={() => setSnackOpen(false)}>
+                <Alert onClose={() => setSnackOpen(false)} severity={snackType}>
+                    {snackTitle}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 }
