@@ -1,13 +1,12 @@
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import {useHistory} from "react-router-dom";
-import {useSelector, useDispatch} from "react-redux";
-
-import Axios from "axios";
+import {useSelector} from "react-redux";
 
 import {
     Container,
     Box,
     Tab,
+    Toolbar,
 } from "@mui/material";
 
 import {
@@ -39,6 +38,7 @@ const PanelPage = () => {
                 mb: "2rem",
             }}
         >
+            <Toolbar />
             <Box
                 sx={{
                     flexGrow: 1,

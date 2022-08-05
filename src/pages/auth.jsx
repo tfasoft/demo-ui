@@ -18,6 +18,7 @@ import {
     DialogActions,
     Snackbar,
     Alert,
+    Toolbar,
 } from "@mui/material";
 
 import {
@@ -152,6 +153,7 @@ const AuthPage = () => {
                 mt: "2rem",
             }}
         >
+            <Toolbar />
             <Card
                 variant="outlined"
                 sx={{
