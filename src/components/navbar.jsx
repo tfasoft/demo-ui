@@ -259,8 +259,6 @@ const Navbar = () => {
                 </Drawer>
             </Box>
 
-            <Toolbar/>
-
             <Dialog
                 open={dialogOpen}
                 onClose={() => setDialogOpen(false)}
