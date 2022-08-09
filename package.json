@@ -19,7 +19,7 @@
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
     "sass": "^1.54.0",
-    "tfa-node-sdk": "^1.1.0",
+    "tfa-node-sdk": "^1.6.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
