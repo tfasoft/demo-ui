@@ -28,28 +28,28 @@ const HomePage = () => {
                         color="primary"
                         gutterBottom
                     >
-                        TFAsoft Demo
+                        دمو سرویس آتنتیکیشن
                     </Typography>
                     <Typography
                         variant="body1"
                         paragraph
                         gutterBottom
                     >
-                        TFAsoft is a new modern authentication service that you can use it in your application. Users will be manage their account with Telegram. We have Google Authentication that we are all familiar with.
+                        سرویس آتنتیکیشن TFASoft یک سرویس مدرن میباشد که به شما امکان احراز هویت با اکانت تلگرام خود را میدهد. یکی از کامن ترین نحوه احراز هویت، احراز هویت گوگل میباشد.
                     </Typography>
                     <Typography
                         variant="body1"
                         paragraph
                         gutterBottom
                     >
-                        So, TFAsoft created a demo application that you can use it to test our service.
+                        در اینجا شما میتوانید سرویس ما را تست کنید، در صورت مشاهده هر گونه مشکل به ما اطلاع دهید تا به ما در بهبود این سرویس کمک کنید.
                     </Typography>
                     <Typography
                         variant="body1"
                         paragraph
                         gutterBottom
                     >
-                        If you saw any issue, bug or things related, ust open drawer and tap on repost a big. Report it to us!
+                        برای ارسال فیدبک و یا اطلاع رسانی ایرادات، از منو وارد بخش گزارش شوید و یک پیام برای ما ارسال کنید. با تشکر.
                     </Typography>
                 </Grid>
             </Grid>
