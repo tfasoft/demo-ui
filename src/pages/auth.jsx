@@ -164,8 +164,8 @@ const AuthPage = () => {
                     <TextField
                         variant="outlined"
                         color="primary"
-                        label="Email"
-                        placeholder="Enter your email"
+                        label="ایمیل"
+                        placeholder="ایمیل خود را وارد کنید"
                         size="medium"
                         type="email"
                         onChange={(e) => setEmail(e.target.value)}
@@ -177,8 +177,8 @@ const AuthPage = () => {
                     <TextField
                         variant="outlined"
                         color="primary"
-                        label="Password"
-                        placeholder="Pick a password"
+                        label="پسوورد"
+                        placeholder="رمز خود را وارد کنید"
                         size="medium"
                         type="password"
                         onChange={(e) => setPassword(e.target.value)}
@@ -194,7 +194,7 @@ const AuthPage = () => {
                         disableElevation
                         fullWidth
                     >
-                        {login ? "Login" : "Register"}
+                        {login ? "ورود" : "ساخت حساب"}
                     </Button>
                     <br/><br/>
                     <Button
@@ -204,7 +204,7 @@ const AuthPage = () => {
                         disableElevation
                         fullWidth
                     >
-                        {login ? "I don't have account" : "I have account"}
+                        {login ? "حساب ندارم، ساخت حساب" : "حساب دارم، ورود"}
                     </Button>
                     <br/><br/>
                     <Divider
@@ -216,33 +216,34 @@ const AuthPage = () => {
                     <Button
                         variant="contained"
                         size="large"
-                        startIcon={<Telegram/>}
+                        startIcon={<Telegram sx={{ ml: 2 }} />} 
                         onClick={() => setOpenTelegram(true)}
                         disableElevation
                         fullWidth
                     >
-                        Continue with Telegram
+                        ادامه با تلگرام
                     </Button>
                 </CardContent>
             </Card>
 
             <Dialog
+                sx={{ textAlign: "right", direction: "rtl" }}
                 open={openTelegram}
                 onClose={() => setOpenTelegram(false)}
             >
                 <DialogTitle>
-                    Authenticate with Telegram
+                    احراز هویت با تلگرام
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Open TFASoft bot and generate a token. Paste your token in the field below.
+                        برای ادامه، وارد بات تلگرام یا نرم‌افزار موبایل شوید و توکن جدید خود را در اینجا جایگذاری کنید.
                     </DialogContentText>
                     <br/>
                     <TextField
                         variant="outlined"
                         color="primary"
-                        label="Token"
-                        placeholder="Paste token"
+                        label="توکن"
+                        placeholder="توکن آحراز هویت را وارد کنید"
                         size="small"
                         type="password"
                         onChange={(e) => setTelegramToken(e.target.value)}
@@ -259,13 +260,22 @@ const AuthPage = () => {
                         disableElevation
                         disabled={telegramLoading}
                     >
-                        Authenticate
+                        احراز هویت
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            <Snackbar open={openSnack} autoHideDuration={6000} onClose={() => setOpenSnack(false)}>
-                <Alert onClose={() => setOpenSnack(false)} severity={typeSnack}>
+            <Snackbar
+                open={openSnack}
+                autoHideDuration={6000}
+                onClose={() => setOpenSnack(false)}
+                // sx={{ textAlign: "right", direction: "rtl" }}
+            >
+                <Alert
+                    onClose={() => setOpenSnack(false)}
+                    severity={typeSnack}
+                    // sx={{ textAlign: "right", direction: "rtl" }}
+                >
                     {messageSnack}
                 </Alert>
             </Snackbar>
