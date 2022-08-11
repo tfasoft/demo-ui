@@ -46,15 +46,15 @@ const PanelPage = () => {
                 }}
             >
                 <TabContext value={tab}>
-                    <Box sx={{borderRight: 1, borderColor: "divider"}}>
+                    <Box sx={{borderLeft: 1, borderColor: "divider"}}>
                         <TabList
                             onChange={changeTab}
                             orientation="vertical"
                             variant="scrollable"
                         >
-                            <Tab label="Home" value="1"/>
-                            <Tab label="Settings" value="2"/>
-                            <Tab label="Telegram" value="3"/>
+                            <Tab label="خانه" value="1"/>
+                            <Tab label="تنظیمات" value="2"/>
+                            <Tab label="تلگرام" value="3"/>
                         </TabList>
                     </Box>
                     <Box sx={{ width: "100%" }}>
