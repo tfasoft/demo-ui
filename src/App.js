@@ -1,5 +1,5 @@
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import {createTheme, ThemeProvider, colors, CssBaseline} from "@mui/material";
+import {createTheme, ThemeProvider, colors, CssBaseline, Box} from "@mui/material";
 import {useDispatch} from "react-redux";
 
 import {envCreate} from "./redux/actions/env";
@@ -13,6 +13,10 @@ function App() {
     const dispatch = useDispatch();
 
     const theme = createTheme({
+        // direction: "rtl",
+        typography: {
+            fontFamily: "Vazirmatn",
+        },
         palette: {
             primary: {
                 main: colors.indigo[500],
@@ -28,14 +32,16 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <Router>
-                <Navbar/>
-                <Switch>
-                    <Route path='/' exact><HomePage/></Route>
-                    <Route path='/auth' exact><AuthPage/></Route>
-                    <Route path='/panel' exact><PanelPage/></Route>
-                </Switch>
-            </Router>
+            <Box sx={{ textAlign: "right", direction: "rtl" }}>
+                <Router>
+                    <Navbar/>
+                    <Switch>
+                        <Route path='/' exact><HomePage/></Route>
+                        <Route path='/auth' exact><AuthPage/></Route>
+                        <Route path='/panel' exact><PanelPage/></Route>
+                    </Switch>
+                </Router>
+            </Box>
         </ThemeProvider>
     );
 }
