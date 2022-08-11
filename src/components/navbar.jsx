@@ -38,6 +38,7 @@ import {
     Login,
     Logout,
     BugReport,
+    PhoneIphone
 } from "@mui/icons-material";
 
 import {deleteUser} from "../redux/actions/user";
@@ -47,24 +48,29 @@ import {logoutUser} from "../redux/actions/session";
 const drawerWidth = 240;
 const navItems = [
     {
-        name: 'TFASoft',
+        name: 'سایت اصلی',
         href: 'https://tfasoft.amirhossein.info',
         icon: <Home />,
     },
     {
-        name: 'Docs',
+        name: 'مستندات',
         href: 'https://docs.amirhossein.info',
         icon: <MenuBook />,
     },
     {
-        name: 'Blog',
+        name: 'بلاگ',
         href: 'https://blog.amirhossein.info',
         icon: <RssFeed />,
     },
     {
-        name: 'Dashboard',
+        name: 'داشبورد',
         href: 'https://dashboard.amirhossein.info',
         icon: <Dashboard />,
+    },
+    {
+        name: 'موبایل',
+        href: 'https://mobile.amirhossein.info',
+        icon: <PhoneIphone />,
     },
 ];
 
@@ -104,7 +110,7 @@ const Navbar = () => {
 
         Axios.post(`${env.REACT_APP_BACKEND_API}/bug/new`, data)
             .then((result) => {
-                createSnack('Report added', 'success');
+                createSnack('گزارش شما ارسال شد', 'success');
 
             })
             .catch((error) => {
@@ -115,13 +121,6 @@ const Navbar = () => {
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             <Toolbar />
-            <Typography
-                variant="h6"
-                sx={{ my: 2 }}
-            >
-                TFASoft services
-            </Typography>
-            <Divider />
             <List>
                 {
                     navItems.map((item) => (
@@ -132,10 +131,16 @@ const Navbar = () => {
                             <ListItemButton
                                 href={item.href}
                             >
-                                <ListItemIcon sx={{ color: "primary.main" }}>{ item.icon }</ListItemIcon>
                                 <ListItemText
                                     primary={ item.name }
+                                    sx={{
+                                        textAlign: "right",
+                                        mr: 2
+                                    }}
                                 />
+                                <ListItemIcon sx={{ color: "primary.main" }}>
+                                    { item.icon }
+                                </ListItemIcon>
                             </ListItemButton>
                         </ListItem>
                     ))
@@ -153,10 +158,14 @@ const Navbar = () => {
                                 <ListItemButton
                                     onClick={() => history.push('/panel')}
                                 >
-                                    <ListItemIcon sx={{ color: "primary.main" }}><Dashboard /></ListItemIcon>
                                     <ListItemText
-                                        primary="Panel"
+                                        primary="پنل کاربری"
+                                        sx={{
+                                            textAlign: "right",
+                                            mr: 2
+                                        }}
                                     />
+                                    <ListItemIcon sx={{ color: "primary.main" }}><Dashboard /></ListItemIcon>
                                 </ListItemButton>
                             </ListItem>
                             <ListItem
@@ -169,10 +178,14 @@ const Navbar = () => {
                                         dispatch(unsetUID());
                                     }}
                                 >
-                                    <ListItemIcon sx={{ color: "primary.main" }}><Logout /></ListItemIcon>
                                     <ListItemText
-                                        primary="Logout"
+                                        primary="خروج"
+                                        sx={{
+                                            textAlign: "right",
+                                            mr: 2
+                                        }}
                                     />
+                                    <ListItemIcon sx={{ color: "primary.main" }}><Logout /></ListItemIcon>
                                 </ListItemButton>
                             </ListItem>
                         </Box>
@@ -183,10 +196,14 @@ const Navbar = () => {
                             <ListItemButton
                                 onClick={() => history.push('/auth')}
                             >
-                                <ListItemIcon sx={{ color: "primary.main" }}><Login /></ListItemIcon>
                                 <ListItemText
-                                    primary="Login"
+                                    primary="ورود"
+                                    sx={{
+                                        textAlign: "right",
+                                        mr: 2
+                                    }}
                                 />
+                                <ListItemIcon sx={{ color: "primary.main" }}><Login /></ListItemIcon>
                             </ListItemButton>
                         </ListItem>
                 }
@@ -199,10 +216,14 @@ const Navbar = () => {
                     <ListItemButton
                         onClick={() => setDialogOpen(true)}
                     >
-                        <ListItemIcon sx={{ color: "primary.main" }}><BugReport /></ListItemIcon>
                         <ListItemText
-                            primary="Report a bug"
+                            primary="ارسال گذارش"
+                            sx={{
+                                textAlign: "right",
+                                mr: 2
+                            }}
                         />
+                        <ListItemIcon sx={{ color: "primary.main" }}><BugReport /></ListItemIcon>
                     </ListItemButton>
                 </ListItem>
             </List>
@@ -223,7 +244,7 @@ const Navbar = () => {
                             aria-label="open drawer"
                             edge="start"
                             onClick={handleDrawerToggle}
-                            sx={{ mr: 2 }}
+                            sx={{ ml: 2 }}
                         >
                             <Menu />
                         </IconButton>
@@ -237,7 +258,7 @@ const Navbar = () => {
                                 history.push('/');
                             }}
                         >
-                            TFASoft Demo
+                            دمو سرویس آتنتیکیشن TFASoft
                         </Typography>
                     </Toolbar>
                 </Container>
@@ -247,6 +268,7 @@ const Navbar = () => {
                 <Drawer
                     variant="temporary"
                     open={drawerOpen}
+                    anchor="right"
                     onClose={handleDrawerToggle}
                     ModalProps={{
                         keepMounted: true,
@@ -260,25 +282,26 @@ const Navbar = () => {
             </Box>
 
             <Dialog
+                sx={{ textAlign: "right", direction: "rtl" }}
                 open={dialogOpen}
                 onClose={() => setDialogOpen(false)}
             >
                 <DialogTitle
                     color="primary.main"
                 >
-                    Report a bug
+                    ارسال گزارش
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Hello dear user/debugger! If you are here, it means that you found a bug. Also it might be for just checking! Anyway, if you saw a bug or things like this, you can send it to us. Thank a lot.
+                        اگر که اینجا هستید به این معنی هست که شاید یک فیدبکی دارید و یا شاید یک مشکل را میخواهید اطلاع دهید. در هر صورت از شما ممنونیم!
                     </DialogContentText>
                     <br />
                     <TextField
                         variant="outlined"
                         color="primary"
                         size="small"
-                        placeholder="Enter bug title!"
-                        label="Bug title"
+                        placeholder="موضوع مربوطه را وارد کنید"
+                        label="موضوع"
                         sx={{ mb: "1rem" }}
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
@@ -288,8 +311,8 @@ const Navbar = () => {
                         variant="outlined"
                         color="primary"
                         size="small"
-                        placeholder="Enter where you saw the bug!"
-                        label="Bug details"
+                        placeholder="توضیجات مربوطه را وارد کنید"
+                        label="توضیحات"
                         sx={{ mb: "1rem" }}
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
@@ -304,13 +327,22 @@ const Navbar = () => {
                         onClick={() => repostBug()}
                         disableElevation
                     >
-                        Report
+                        ارسال
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            <Snackbar open={snackOpen} autoHideDuration={6000} onClose={() => setSnackOpen(false)}>
-                <Alert onClose={() => setSnackOpen(false)} severity={snackType}>
+            <Snackbar
+                open={snackOpen}
+                autoHideDuration={6000}
+                onClose={() => setSnackOpen(false)}
+                sx={{ textAlign: "right", direction: "rtl" }}
+            >
+                <Alert
+                    onClose={() => setSnackOpen(false)}
+                    severity={snackType}
+                    sx={{ textAlign: "right", direction: "rtl" }}
+                >
                     {snackTitle}
                 </Alert>
             </Snackbar>
