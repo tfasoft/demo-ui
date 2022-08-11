@@ -59,27 +59,26 @@ const SettingsTab = () => {
             .then((result) => {
                 dispatch(createUser(result));
 
-                createSnack('Data updated', 'success');
+                createSnack('اطلاعات آپدیت شد', 'success');
             })
             .catch((error) => {
                 console.log(error);
 
-                createSnack('Sorry, something went wront', 'error');
+                createSnack('متاسفانه مشکلی پیش آمد، لطفا بعدا تلاش کنید', 'error');
             });
     }
 
     return (
         <Box>
             <Card variant="outlined">
-                <CardHeader title="Settings" sx={{ color: "primary.main" }} />
+                <CardHeader title="تنظیمات" sx={{ color: "primary.main" }} />
                 <CardContent>
                     <TextField
                         variant="outlined"
                         color="primary"
-                        label="Name"
-                        placeholder="Enter name"
+                        label="نام"
+                        placeholder="نام خود را وارد کنید"
                         size="small"
-                        // margin="dense"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         fullWidth
@@ -89,8 +88,8 @@ const SettingsTab = () => {
                     <TextField
                         variant="outlined"
                         color="primary"
-                        label="Email"
-                        placeholder="Enter email"
+                        label="ایمیل"
+                        placeholder="ایمیل خود را وارد کنید"
                         size="small"
                         // margin="dense"
                         value={email}
@@ -102,8 +101,8 @@ const SettingsTab = () => {
                     <TextField
                         variant="outlined"
                         color="primary"
-                        label="Password"
-                        placeholder="Enter password"
+                        label="رمز"
+                        placeholder="رمز خود را وارد کنید"
                         size="small"
                         type="password"
                         value={password}
@@ -118,7 +117,7 @@ const SettingsTab = () => {
                         onClick={() => updateData()}
                         disableElevation
                     >
-                        Update data
+                        تغییر اطلاعات
                     </Button>
                 </CardContent>
             </Card>

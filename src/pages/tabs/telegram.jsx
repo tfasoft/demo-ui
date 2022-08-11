@@ -63,25 +63,25 @@ const TelegramTab = () => {
                 dispatch(createUser(result));
 
                 setOpenTelegramID(false);
-                createSnack('Telegram Authentication is now enabled', 'success');
+                createSnack('اتنتیکیشن تلگرام برای حساب شما فعال شد', 'success');
             })
             .catch((error) => {
                 console.log(error);
 
-                createSnack('Sorry, something went wrong', 'error');
+                createSnack('متاسفانه مشکلی پیش آمد، لطفا بعدا تلاش کنید', 'error');
             });
     }
 
     return (
         <Box>
             <Card variant="outlined">
-                <CardHeader title="Telegram Authenticaton" sx={{ color: "primary.main" }} />
+                <CardHeader title="احراز هویت تلگرام" sx={{ color: "primary.main" }} />
                 <CardContent>
                     <Typography
                         variant="body1"
                         color={telegramAuth ? 'success.main' : 'error.main'}
                     >
-                        Your Telegram Authentication is { telegramAuth ? 'enable.' : 'disable.' }
+                        آتنتیکیشن تلگرام برای اکانت شما فعال { telegramAuth ? 'است.' : 'نیست.' }
                     </Typography>
                     {
                         !telegramAuth
@@ -91,7 +91,7 @@ const TelegramTab = () => {
                                 gutterBottom
                                 paragraph
                             >
-                                You can enable TFA with clicking the button below.
+                                شما میتوانید با کلیک روی دکمه زیر احراز هویت تلگزام را فعال کنید.
                             </Typography>
                             <Button
                                 variant="contained"
@@ -99,7 +99,7 @@ const TelegramTab = () => {
                                 onClick={() => setOpenTelegramID(true)}
                                 disableElevation
                             >
-                                Activate
+                                فعال سازی
                             </Button>
                         </Box>
                     }
@@ -107,23 +107,23 @@ const TelegramTab = () => {
             </Card>
 
             <Dialog
+                sx={{ textAlign: "right", direction: "rtl" }}
                 open={openTelegramID}
                 onClose={() => setOpenTelegramID(false)}
             >
                 <DialogTitle>
-                    Authenticate with Telegram
+                    احراز هویت با تلگرام
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        To get your TID ( Telegram ID ), open TFA bot and click on my info. TID is available there and
-                        you can add it here.
+                        پس از وارد بات تلگرام شدن، وقتی روی اطلاعات من بزنید آیدی عددی تلگرام خوذ را مشاهده میکنید. با کپی آیدی و وارد کردن در یلد زیر، احراز هویت برای شما فعال میشود.
                     </DialogContentText>
                     <br/>
                     <TextField
                         variant="outlined"
                         color="primary"
-                        label="Telegram ID"
-                        placeholder="Enter Telegram ID"
+                        label="آیدی تلگرام"
+                        placeholder="آیدی تلگرام را وارد کنید"
                         size="small"
                         type="text"
                         onChange={(e) => setTelegramID(e.target.value)}
@@ -138,7 +138,7 @@ const TelegramTab = () => {
                         onClick={() => enableTFA()}
                         disableElevation
                     >
-                        Enable TFA
+                        فعال سازی آحراز هویت
                     </Button>
                 </DialogActions>
             </Dialog>
