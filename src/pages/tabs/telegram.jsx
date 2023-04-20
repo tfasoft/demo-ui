@@ -1,155 +1,115 @@
-import {useState} from "react";
-import Axios from "axios";
-import {useSelector, useDispatch} from "react-redux";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    TextField,
-    Typography,
-    Card,
-    CardHeader,
-    CardContent,
-    Snackbar,
-    Alert
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Typography,
+  Card,
+  CardHeader,
+  CardContent,
+  Snackbar,
+  Alert,
 } from "@mui/material";
-import {createUser} from "../../redux/actions/user";
+
+import API from "../../api";
+import { Form } from "../../components";
 
 const TelegramTab = () => {
-    const dispatch = useDispatch();
-    const user = useSelector(state => state.user);
-    const uid = useSelector(state => state.uid);
-    const env = useSelector(state => state.env);
+  const { user } = useSelector((state) => state);
 
-    const telegramAuth = user.tid;
+  const telegramAuth = user.tid;
 
-    const [telegramID, setTelegramID] = useState('');
-    const [openTelegramID, setOpenTelegramID] = useState(false);
+  const [openTelegramID, setOpenTelegramID] = useState(false);
 
-    Axios.post(`${env.REACT_APP_BACKEND_API}/user/info`, {id: uid})
-        .then((result) => {
-            const data = result.data;
-            dispatch(createUser(data));
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+  // Snackbar
+  const [openSnack, setOpenSnack] = useState(false);
+  const [messageSnack, setMessageSnack] = useState("");
+  const [typeSnack, setTypeSnack] = useState("");
+  const createSnack = (message, type) => {
+    setMessageSnack(message);
+    setTypeSnack(type);
 
-    // Snackbar
-    const [openSnack, setOpenSnack] = useState(false);
-    const [messageSnack, setMessageSnack] = useState('');
-    const [typeSnack, setTypeSnack] = useState('');
-    const createSnack = (message, type) => {
-        setMessageSnack(message);
-        setTypeSnack(type);
+    setOpenSnack(true);
+  };
 
-        setOpenSnack(true)
-    }
+  const enableTFA = (callback) => {
+    API.patch(`users/${user._id}`, callback)
+      .then((result) => {
+        setOpenTelegramID(false);
+        createSnack(result.data.message, "success");
+      })
+      .catch((error) => {
+        console.log(error);
 
-    const enableTFA = () => {
-        const data = {
-            uid,
-            "data": {
-                tid: telegramID
-            }
-        }
+        createSnack(error.response.data.message, "error");
+      });
+  };
 
-        Axios.post(`${env.REACT_APP_BACKEND_API}/user/enabletfa`, data)
-            .then((result) => {
-                dispatch(createUser(result));
+  return (
+    <Box>
+      <Card variant="outlined">
+        <CardHeader
+          title="Telegram authentication"
+          sx={{ color: "primary.main" }}
+        />
+        <CardContent>
+          <Typography
+            variant="body1"
+            color={telegramAuth ? "success.main" : "error.main"}
+          >
+            Telegram authentication is{" "}
+            {telegramAuth ? "activated" : "not activated"} for you.
+          </Typography>
+          {!telegramAuth && (
+            <Box>
+              <Typography gutterBottom paragraph>
+                By clicking on the button below, you can activate Telegram
+                authentication.
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setOpenTelegramID(true)}
+                disableElevation
+              >
+                Activate
+              </Button>
+            </Box>
+          )}
+        </CardContent>
+      </Card>
 
-                setOpenTelegramID(false);
-                createSnack('اتنتیکیشن تلگرام برای حساب شما فعال شد', 'success');
-            })
-            .catch((error) => {
-                console.log(error);
+      <Dialog open={openTelegramID} onClose={() => setOpenTelegramID(false)}>
+        <DialogTitle>Add Telegram authentication</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            After opening bot, tap my info. Then copy the id provided and paste
+            it here.
+          </DialogContentText>
+          <Form
+            name="enableAuth"
+            button="Activate"
+            btnStyle={{ fullWidth: false, disabled: false }}
+            callback={enableTFA}
+          />
+        </DialogContent>
+      </Dialog>
 
-                createSnack('متاسفانه مشکلی پیش آمد، لطفا بعدا تلاش کنید', 'error');
-            });
-    }
-
-    return (
-        <Box>
-            <Card variant="outlined">
-                <CardHeader title="احراز هویت تلگرام" sx={{ color: "primary.main" }} />
-                <CardContent>
-                    <Typography
-                        variant="body1"
-                        color={telegramAuth ? 'success.main' : 'error.main'}
-                    >
-                        آتنتیکیشن تلگرام برای اکانت شما فعال { telegramAuth ? 'است.' : 'نیست.' }
-                    </Typography>
-                    {
-                        !telegramAuth
-                        &&
-                        <Box>
-                            <Typography
-                                gutterBottom
-                                paragraph
-                            >
-                                شما میتوانید با کلیک روی دکمه زیر احراز هویت تلگزام را فعال کنید.
-                            </Typography>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => setOpenTelegramID(true)}
-                                disableElevation
-                            >
-                                فعال سازی
-                            </Button>
-                        </Box>
-                    }
-                </CardContent>
-            </Card>
-
-            <Dialog
-                sx={{ textAlign: "right", direction: "rtl" }}
-                open={openTelegramID}
-                onClose={() => setOpenTelegramID(false)}
-            >
-                <DialogTitle>
-                    احراز هویت با تلگرام
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        پس از وارد بات تلگرام شدن، وقتی روی اطلاعات من بزنید آیدی عددی تلگرام خوذ را مشاهده میکنید. با کپی آیدی و وارد کردن در یلد زیر، احراز هویت برای شما فعال میشود.
-                    </DialogContentText>
-                    <br/>
-                    <TextField
-                        variant="outlined"
-                        color="primary"
-                        label="آیدی تلگرام"
-                        placeholder="آیدی تلگرام را وارد کنید"
-                        size="small"
-                        type="text"
-                        onChange={(e) => setTelegramID(e.target.value)}
-                        value={telegramID}
-                        fullWidth
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => enableTFA()}
-                        disableElevation
-                    >
-                        فعال سازی آحراز هویت
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-            <Snackbar open={openSnack} autoHideDuration={6000} onClose={() => setOpenSnack(false)}>
-                <Alert onClose={() => setOpenSnack(false)} severity={typeSnack}>
-                    {messageSnack}
-                </Alert>
-            </Snackbar>
-        </Box>
-    )
-}
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnack(false)}
+      >
+        <Alert onClose={() => setOpenSnack(false)} severity={typeSnack}>
+          {messageSnack}
+        </Alert>
+      </Snackbar>
+    </Box>
+  );
+};
 
 export default TelegramTab;

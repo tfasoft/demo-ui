@@ -1,134 +1,92 @@
-import {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import Axios from "axios";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import {
-    Box,
-    TextField,
-    Button,
-    Card,
-    CardHeader,
-    CardContent,
-    Snackbar,
-    Alert
+  Box,
+  Card,
+  CardHeader,
+  CardContent,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
-import {createUser} from "../../redux/actions/user";
+import { Form } from "../../components";
+import API from "../../api";
 
 const SettingsTab = () => {
-    const dispatch = useDispatch();
+  const { user } = useSelector((state) => state);
 
-    const user = useSelector(state => state.user);
-    const uid = useSelector(state => state.uid);
-    const env = useSelector(state => state.env);
+  // Snackbar
+  const [openSnack, setOpenSnack] = useState(false);
+  const [messageSnack, setMessageSnack] = useState("");
+  const [typeSnack, setTypeSnack] = useState("");
+  const createSnack = (message, type) => {
+    setMessageSnack(message);
+    setTypeSnack(type);
 
-    const [name, setName] = useState(user.name);
-    const [email, setEmail] = useState(user.email);
-    const [password, setPassword] = useState(user.password);
+    setOpenSnack(true);
+  };
 
-    Axios.post(`${env.REACT_APP_BACKEND_API}/user/info`, {id: uid})
-        .then((result) => {
-            const data = result.data;
-            dispatch(createUser(data));
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+  const updateData = (callback) => {
+    API.patch(`users/${user._id}`, callback)
+      .then((result) => {
+        createSnack(result.data.message, "success");
+      })
+      .catch((error) => {
+        createSnack(error.response.data.message, "error");
+      });
+  };
 
-    // Snackbar
-    const [openSnack, setOpenSnack] = useState(false);
-    const [messageSnack, setMessageSnack] = useState('');
-    const [typeSnack, setTypeSnack] = useState('');
-    const createSnack = (message, type) => {
-        setMessageSnack(message);
-        setTypeSnack(type);
+  const updatePass = (callback) => {
+    API.patch(`users/password/${user._id}`, callback)
+      .then((result) => {
+        createSnack(result.data.message, "success");
+      })
+      .catch((error) => {
+        createSnack(error.response.data.message, "error");
+      });
+  };
 
-        setOpenSnack(true)
-    }
+  return (
+    <Box>
+      <Card variant="outlined">
+        <CardHeader title="Change common data" sx={{ color: "primary.main" }} />
+        <CardContent>
+          <Form
+            name="commonSettings"
+            button="Change common data"
+            btnStyle={{ fullWidth: true, disabled: false }}
+            def={user}
+            callback={updateData}
+          />
+        </CardContent>
+      </Card>
+      <br />
+      <Card variant="outlined">
+        <CardHeader
+          title="Change security data"
+          sx={{ color: "primary.main" }}
+        />
+        <CardContent>
+          <Form
+            name="securitySettings"
+            button="Change security data"
+            btnStyle={{ fullWidth: true, disabled: false }}
+            callback={updatePass}
+          />
+        </CardContent>
+      </Card>
 
-    const updateData = () => {
-        const data = {
-            uid,
-            "data": {
-                name,
-                email,
-                password,
-            }
-        }
-
-        Axios.post(`${env.REACT_APP_BACKEND_API}/user/update`, data)
-            .then((result) => {
-                dispatch(createUser(result));
-
-                createSnack('اطلاعات آپدیت شد', 'success');
-            })
-            .catch((error) => {
-                console.log(error);
-
-                createSnack('متاسفانه مشکلی پیش آمد، لطفا بعدا تلاش کنید', 'error');
-            });
-    }
-
-    return (
-        <Box>
-            <Card variant="outlined">
-                <CardHeader title="تنظیمات" sx={{ color: "primary.main" }} />
-                <CardContent>
-                    <TextField
-                        variant="outlined"
-                        color="primary"
-                        label="نام"
-                        placeholder="نام خود را وارد کنید"
-                        size="small"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        fullWidth
-                    />
-                    <br />
-                    <br />
-                    <TextField
-                        variant="outlined"
-                        color="primary"
-                        label="ایمیل"
-                        placeholder="ایمیل خود را وارد کنید"
-                        size="small"
-                        // margin="dense"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        fullWidth
-                    />
-                    <br />
-                    <br />
-                    <TextField
-                        variant="outlined"
-                        color="primary"
-                        label="رمز"
-                        placeholder="رمز خود را وارد کنید"
-                        size="small"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        fullWidth
-                    />
-                    <br />
-                    <br />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => updateData()}
-                        disableElevation
-                    >
-                        تغییر اطلاعات
-                    </Button>
-                </CardContent>
-            </Card>
-
-            <Snackbar open={openSnack} autoHideDuration={6000} onClose={() => setOpenSnack(false)}>
-                <Alert onClose={() => setOpenSnack(false)} severity={typeSnack}>
-                    {messageSnack}
-                </Alert>
-            </Snackbar>
-        </Box>
-    )
-}
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnack(false)}
+      >
+        <Alert onClose={() => setOpenSnack(false)} severity={typeSnack}>
+          {messageSnack}
+        </Alert>
+      </Snackbar>
+    </Box>
+  );
+};
 
 export default SettingsTab;
