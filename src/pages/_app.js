@@ -16,6 +16,7 @@ import { loadState, saveState } from "@/redux/store/localstore";
 import reducers from "@/redux/reducers";
 
 import { Navbar } from "@/components";
+import { AppLayout } from "@/layouts";
 
 const vazir = Vazirmatn({ subsets: ["latin"] });
 
@@ -55,10 +56,10 @@ export default function App({ Component, pageProps }) {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Box>
+        <AppLayout>
           <Navbar />
           <Component {...pageProps} />
-        </Box>
+        </AppLayout>
       </ThemeProvider>
     </Provider>
   );
