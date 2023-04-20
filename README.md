@@ -1,9 +1,7 @@
-# TFA Soft Demo - Front-End
+# TFASoft Demo | UI
 
-**TFAsoft Demo** is a **MERN** application. This is the Front-End part of it.
-
-> We create the Front-End with **MUI** design.
+**TFA Blog** is a **MERN** application. This is the Front-End part of it.
 
 ## Back-End
 
-Back-End is available [here](https://github.com/tele-fa/demo-backend).
+Back-End is available [here](https://github.com/tfasoft/demo-api).
