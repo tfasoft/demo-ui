@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -30,7 +30,10 @@ const AuthPage = () => {
   const history = useRouter();
 
   const session = useSelector((state) => state.token);
-  if (session) history.push("/panel");
+
+  useEffect(() => {
+    if (session) history.push("/panel");
+  }, [session]);
 
   const [login, setLogin] = useState(true);
   const [openTelegram, setOpenTelegram] = useState(false);

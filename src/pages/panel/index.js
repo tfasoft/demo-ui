@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
@@ -14,7 +14,10 @@ const PanelPage = () => {
   const history = useRouter();
 
   const session = useSelector((state) => state.token);
-  if (!session) history.push("/auth");
+
+  useEffect(() => {
+    if (!session) history.push("/auth");
+  }, [session]);
 
   const [tab, setTab] = useState("1");
   const changeTab = (event, newValue) => {
