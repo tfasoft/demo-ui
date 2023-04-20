@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -19,15 +19,15 @@ import {
 
 import { Telegram } from "@mui/icons-material";
 
-import { SET_TOKEN } from "../redux/actions/token";
-import { SET_USER } from "../redux/actions/user";
+import { SET_TOKEN } from "@/redux/actions/token";
+import { SET_USER } from "@/redux/actions/user";
 
-import API from "../api";
-import { Form } from "../components";
+import API from "@/api";
+import { Form } from "@/components";
 
 const AuthPage = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useRouter();
 
   const session = useSelector((state) => state.token);
   if (session) history.push("/panel");

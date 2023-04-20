@@ -15,8 +15,8 @@ import {
   Alert,
 } from "@mui/material";
 
-import API from "../../api";
-import { Form } from "../../components";
+import API from "@/api";
+import { Form } from "@/components";
 
 const TelegramTab = () => {
   const { user } = useSelector((state) => state);

@@ -9,8 +9,8 @@ import {
   Alert,
 } from "@mui/material";
 
-import { Form } from "../../components";
-import API from "../../api";
+import { Form } from "@/components";
+import API from "@/api";
 
 const SettingsTab = () => {
   const { user } = useSelector((state) => state);

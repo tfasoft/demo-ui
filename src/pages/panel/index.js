@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
 import { Container, Box, Tab, Toolbar } from "@mui/material";
@@ -11,7 +11,7 @@ import SettingsTab from "./tabs/settings";
 import HomeTab from "./tabs/home";
 
 const PanelPage = () => {
-  const history = useHistory();
+  const history = useRouter();
 
   const session = useSelector((state) => state.token);
   if (!session) history.push("/auth");
