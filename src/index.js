@@ -1,33 +1,33 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-import {createStore} from "redux";
-import {Provider} from "react-redux";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 
-import {loadState, saveState} from "./redux/store/localstore";
+import { loadState, saveState } from "./redux/store/localstore";
 import reducers from "./redux/reducers";
 
-import App from './App';
+import App from "./App";
 import "./App.sass";
 
 const persistedState = loadState();
 
 let store = createStore(
-    reducers,
-    persistedState,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-)
+  reducers,
+  persistedState,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
-store.subscribe(() => saveState({
-    env: store.getState().env,
-    session: store.getState().session,
-    uid: store.getState().uid,
+store.subscribe(() =>
+  saveState({
     user: store.getState().user,
-}))
+    token: store.getState().token,
+  })
+);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <Provider store={store}>
-        <App />
-    </Provider>
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
