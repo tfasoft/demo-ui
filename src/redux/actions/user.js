@@ -1,12 +1,12 @@
-export const createUser = (user) => {
-    return {
-        type: "CREATE_USER",
-        payload: user,
-    }
-}
+export const SET_USER = (user) => {
+  return {
+    type: "SET_USER",
+    payload: user,
+  };
+};
 
-export const deleteUser = () => {
-    return {
-        type: "DELETE_USER",
-    }
-}
+export const UNSET_USER = () => {
+  return {
+    type: "UNSET_USER",
+  };
+};
