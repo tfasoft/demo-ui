@@ -13,7 +13,7 @@ import {
 
 import { Delete } from "@mui/icons-material";
 
-import { tables } from "../../config";
+import { tables } from "@/config";
 
 import { useEffect, useState } from "react";
 

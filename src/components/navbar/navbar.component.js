@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -36,11 +36,11 @@ import {
   PhoneIphone,
 } from "@mui/icons-material";
 
-import { UNSET_USER } from "../../redux/actions/user";
-import { UNSET_TOKEN } from "../../redux/actions/token";
+import { UNSET_USER } from "@/redux/actions/user";
+import { UNSET_TOKEN } from "@/redux/actions/token";
 
-import { Form } from "../../components";
-import API from "../../api";
+import { Form } from "@/components";
+import API from "@/api";
 
 const drawerWidth = 240;
 const navItems = [
@@ -72,7 +72,7 @@ const navItems = [
 ];
 
 const Navbar = () => {
-  const history = useHistory();
+  const history = useRouter();
   const dispatch = useDispatch();
 
   const session = useSelector((state) => state.token);

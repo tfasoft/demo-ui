@@ -15,7 +15,7 @@ import {
   Checkbox,
 } from "@mui/material";
 
-import { forms } from "../../config";
+import { forms } from "@/config";
 
 const FormsComponent = ({ name, button, btnStyle, def, callback, change }) => {
   const { register, handleSubmit } = useForm({
