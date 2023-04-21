@@ -43,20 +43,6 @@ const forms = {
       secure: false,
     },
   },
-  reportBug: {
-    title: {
-      type: "text",
-      label: "Title",
-      placeholder: "Enter bug title",
-      secure: false,
-    },
-    content: {
-      type: "textarea",
-      label: "Details",
-      placeholder: "Enter bug details",
-      secure: false,
-    },
-  },
   enableAuth: {
     tid: {
       type: "text",

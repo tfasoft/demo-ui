@@ -16,10 +16,6 @@ import {
   ListItemIcon,
   IconButton,
   Drawer,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
   Alert,
   Snackbar,
 } from "@mui/material";
@@ -38,9 +34,6 @@ import {
 
 import { UNSET_USER } from "@/redux/actions/user";
 import { UNSET_TOKEN } from "@/redux/actions/token";
-
-import { Form } from "@/components";
-import API from "@/api";
 
 const drawerWidth = 240;
 const navItems = [
@@ -82,8 +75,6 @@ const Navbar = () => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const [dialogOpen, setDialogOpen] = useState(false);
-
   const [snackOpen, setSnackOpen] = useState(false);
   const [snackTitle, setSnackTitle] = useState("");
   const [snackType, setSnackType] = useState("");
@@ -92,16 +83,6 @@ const Navbar = () => {
     setSnackType(type);
 
     setSnackOpen(true);
-  };
-
-  const repostBug = (callback) => {
-    API.post(`bug`, callback)
-      .then((result) => {
-        createSnack(result.data.message, "success");
-      })
-      .catch((error) => {
-        createSnack(error.response.data.message, "error");
-      });
   };
 
   const drawer = (
@@ -159,7 +140,11 @@ const Navbar = () => {
       <Divider />
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => setDialogOpen(true)}>
+          <ListItemButton
+            onClick={() =>
+              window.open("https://github.com/tfasoft/api/issues/new")
+            }
+          >
             <ListItemText primary="Report bug" />
             <ListItemIcon sx={{ color: "primary.main" }}>
               <BugReport />
@@ -222,21 +207,6 @@ const Navbar = () => {
           {drawer}
         </Drawer>
       </Box>
-
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-        <DialogTitle color="primary.main">Report bug</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            So, you found a bug! Report it to us please.
-          </DialogContentText>
-          <Form
-            name="reportBug"
-            button="Report"
-            btnStyle={{ fullWidth: false, disabled: false }}
-            callback={repostBug}
-          />
-        </DialogContent>
-      </Dialog>
 
       <Snackbar
         open={snackOpen}
