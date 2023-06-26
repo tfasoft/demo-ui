@@ -36,7 +36,6 @@ const AuthPage = () => {
   }, [session]);
 
   const [login, setLogin] = useState(true);
-  const [openTelegram, setOpenTelegram] = useState(false);
 
   // Snackbar
   const [openSnack, setOpenSnack] = useState(false);
@@ -77,15 +76,10 @@ const AuthPage = () => {
     }
   };
 
-  const telegramAuth = (callback) => {
-    API.post(`auth/telegram`, callback)
+  const continueTelegram = () => {
+    API.get(`auth/request`)
       .then((result) => {
-        const { token, user } = result.data;
-
-        dispatch(SET_TOKEN(token));
-        dispatch(SET_USER(user));
-
-        createSnack("User is registered", "success");
+        window.open(result.data.url);
       })
       .catch((error) => {
         createSnack(error.response.data.message, "error");
@@ -136,7 +130,7 @@ const AuthPage = () => {
             variant="contained"
             size="large"
             startIcon={<Telegram />}
-            onClick={() => setOpenTelegram(true)}
+            onClick={() => continueTelegram(true)}
             disableElevation
             fullWidth
           >
@@ -144,21 +138,6 @@ const AuthPage = () => {
           </Button>
         </CardContent>
       </Card>
-
-      <Dialog open={openTelegram} onClose={() => setOpenTelegram(false)}>
-        <DialogTitle>Continue with Telegram</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To continue, open tfasoft bot and press login to get a new token.
-          </DialogContentText>
-          <Form
-            name="telegramAuth"
-            button="Continue"
-            btnStyle={{ fullWidth: false, disabled: false }}
-            callback={telegramAuth}
-          />
-        </DialogContent>
-      </Dialog>
 
       <Snackbar
         open={openSnack}
